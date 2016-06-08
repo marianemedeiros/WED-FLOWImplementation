@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- XSD for WED-flow update -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+	<xsd:include schemaLocation="wed_flow_initial_schema.xsd" />
+	<xsd:element name="WED-flow-update-schema">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="WED-conditions" type="ConditionsUpdateType" minOccurs="0" maxOccurs="1" />
+				<xsd:element name="WED-transitions" type="TransitionsUpdateType" minOccurs="0" maxOccurs="1" />
+				<xsd:element name="WED-flows" type="FlowsUpdateType" minOccurs="0" maxOccurs="1" />
+				<xsd:element name="AWICs" type="AWICsUpdateType" minOccurs="0" maxOccurs="1" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:complexType name="ConditionsUpdateType">
+		<xsd:sequence>
+			<xsd:element name="Deletions" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Condition" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:attribute name="Name" type="xsd:string" use="required" />
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Insertions" type="ConditionsType" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="TransitionsUpdateType">
+		<xsd:sequence>
+			<xsd:element name="Deletions" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Transition" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:attribute name="Name" type="xsd:string" use="required" />
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Insertions" type="TransitionsType" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="FlowsUpdateType">
+		<xsd:sequence>
+			<xsd:element name="Insertions" type="FlowsType" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="Deletions" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Flow" minOccurs="1" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:attribute name="Name" type="xsd:string" use="required" />
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Updates" minOccurs="0" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Flow" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="Deletions" type="TriggersType" minOccurs="0" maxOccurs="1" />
+									<xsd:element name="Insertions" type="TriggersType" minOccurs="0" maxOccurs="1" />
+								</xsd:sequence>
+								<xsd:attribute name="Name" type="xsd:string" use="required" />
+								<xsd:attribute name="FinalStateCondName" type="xsd:string" use="required" />
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AWICsUpdateType">
+		<xsd:sequence>
+			<xsd:element name="Deletions" type="AWICsType" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="Insertions" type="AWICsType" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>
