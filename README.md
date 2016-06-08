@@ -7,5 +7,5 @@ Instalar:
 
 Todas as bibliotecas necessárias estão no arquivo requirements.txt. Para instalar todas
 digite:
-    - pip3 install -r requirements.txt
+  - pip3 install -r requirements.txt
 
