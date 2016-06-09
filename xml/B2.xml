@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WED-flow-update-schema>
+	<WED-conditions>
+		<Deletions>
+			<Condition Name="c_tentativa_excedida" />
+			<Condition Name="c_recusa_notificada" />
+			<Condition Name="c_pedido_tratado" />
+		</Deletions>
+
+		<Insertions>
+			<Condition Name="c_pedido_e_estoque_tratados" >
+				<Predicate Id="1"> pedido = "envio notificado" </Predicate>
+				<Predicate Id="2"> cliente = "atualizado" </Predicate>
+				<Predicate Id="3"> produto = "estoque atualizado" </Predicate>
+				<Expression> 1 AND 2 AND 3</Expression>
+			</Condition>
+		</Insertions>
+	</WED-conditions>
+
+	<WED-transitions>
+		<Deletions>
+			<Transition Name="t_emitir_notificacao_recusa" />
+		</Deletions>
+
+		<Insertions>
+			<Transition Name="t_atualizar_estoque" >
+				<UpdatedAttribute AttrName="produto" />
+			</Transition>
+
+		</Insertions>
+	</WED-transitions>
+
+	<WED-flows>
+		<Updates>
+			<Flow Name="venda_livro" FinalStateCondName="c_pedido_finalizado">
+				<Deletions>
+					<Trigger CondName="c_pagamento_recusado" TransName="t_emitir_notificacao_recusa" Period="5s" />
+					<Trigger CondName="c_recusa_notificada" TransName="t_processar_pagamento" Period="5s" />
+					<Trigger CondName="c_tentativa_excedida" TransName="t_abortar_venda" Period="5s" />
+					<Trigger CondName="c_pedido_tratado" TransName="t_fechar_pedido" Period="1s" />
+				</Deletions>
+
+				<Insertions>
+					<Trigger CondName="c_pagamento_recusado" TransName="t_abortar_venda" Period="5s" />
+					<Trigger CondName="c_produto_enviado" TransName="t_atualizar_estoque" Period="3s" />
+					<Trigger CondName="c_pedido_e_estoque_tratados" TransName="t_fechar_pedido" Period="1s" />
+				</Insertions>
+			</Flow>
+		</Updates>
+	</WED-flows>
+</WED-flow-update-schema>
