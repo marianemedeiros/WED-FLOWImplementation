@@ -1,8 +1,10 @@
 from sqlalchemy import Integer, Column, create_engine, ForeignKey, String, DateTime, Boolean
 from sqlalchemy.orm import relationship, joinedload, subqueryload, Session
 from sqlalchemy.ext.declarative import declarative_base
+from Associations import *
+from WED_flow import *
+from WED_trigger import *
 
-Base = declarative_base()
 engine = None
 session = None
 
