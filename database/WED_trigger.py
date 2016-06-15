@@ -1,5 +1,5 @@
 from sqlalchemy import Integer, Column, create_engine, ForeignKey, String, DateTime, Boolean
-from sqlalchemy.orm import relationship, joinedload, subqueryload, Session
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from Associations import *
 from WED_flow import *
@@ -7,8 +7,12 @@ from WED_state import *
 from WED_transition import *
 from WED_condition import *
 
+<<<<<<< Updated upstream
 engine = None
 session = None
+=======
+Base = declarative_base()
+>>>>>>> Stashed changes
 
 ''' verificar se o tipo period eh mesmo string '''
 class WED_trigger(Base):

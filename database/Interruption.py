@@ -1,12 +1,16 @@
-from sqlalchemy import Integer, Column, create_engine, ForeignKey, String, DateTime, Boolean
-from sqlalchemy.orm import relationship, joinedload, subqueryload, Session
+from sqlalchemy import Integer, Column, ForeignKey, String, DateTime
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from Associations import *
 from Instance import *
 from History_entry import *
 
+<<<<<<< Updated upstream
 engine = None
 session = None
+=======
+Base = declarative_base()
+>>>>>>> Stashed changes
 
 class Interruption(Base):
     __tablename__ = 'interruption'
