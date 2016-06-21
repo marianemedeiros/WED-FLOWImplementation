@@ -28,9 +28,17 @@ class DAO:
 
 	def insert(self):
 		dict_data = self.readxml.data_wed_conditions()
-		for dataList in dict_data:
-			print(dataList['@Name'])
-			print(dataList)
+		for name in dict_data:
+			print(name['@Name'])
+			#print(name['Predicate'])
+			
+			predicates = name['Predicate']
+			
+			if isinstance(predicates, list):
+				for text in predicates:
+					print(text['#text'])
+			else:
+				print(predicates['#text'])
 		#wed_condition = WED_condition()
 		#session.commit()
 
