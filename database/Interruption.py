@@ -5,12 +5,8 @@ from Associations import *
 from Instance import *
 from History_entry import *
 
-<<<<<<< Updated upstream
 engine = None
 session = None
-=======
-Base = declarative_base()
->>>>>>> Stashed changes
 
 class Interruption(Base):
     __tablename__ = 'interruption'

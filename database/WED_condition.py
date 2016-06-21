@@ -5,12 +5,8 @@ from Associations import *
 from WED_flow import *
 from WED_trigger import *
 
-<<<<<<< Updated upstream
 engine = None
 session = None
-=======
-Base = declarative_base()
->>>>>>> Stashed changes
 
 ''' olhar o site para fazer as relações, http://docs.sqlalchemy.org/en/latest/orm/basic_relationships.html'''
 ''' Aqui eu fiz uma relação one to many bidirecional, tem que ver se é essa mesmo eu fiz mas eu não sei a diferença'''

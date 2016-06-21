@@ -6,12 +6,8 @@ from WED_condition import *
 from Instance import *
 from WED_trigger import *
 
-<<<<<<< Updated upstream
 engine = None
 session = None
-=======
-Base = declarative_base()
->>>>>>> Stashed changes
 
 class WED_flow(Base):
     __tablename__ = 'wed_flow'

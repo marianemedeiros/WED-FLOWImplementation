@@ -7,12 +7,9 @@ from WED_state import *
 from WED_transition import *
 from WED_condition import *
 
-<<<<<<< Updated upstream
 engine = None
 session = None
-=======
-Base = declarative_base()
->>>>>>> Stashed changes
+
 
 ''' verificar se o tipo period eh mesmo string '''
 class WED_trigger(Base):
