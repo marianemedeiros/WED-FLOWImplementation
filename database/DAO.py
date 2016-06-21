@@ -26,7 +26,6 @@ class DAO:
 
     def insert(self):
         dict_data = self.readxml.data_wed_conditions()
-
         for name in dict_data:
             print(name['@Name'])
             #print(name['Predicate'])
