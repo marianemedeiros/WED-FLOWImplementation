@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<WED-flow-update-schema>
+<WED-flow-initial-schema>
 	<WED-conditions>
 		<Deletions>
 			<Condition Name="c_tentativa_excedida" />
@@ -31,21 +31,18 @@
 	</WED-transitions>
 
 	<WED-flows>
-		<Updates>
-			<Flow Name="venda_livro" FinalStateCondName="c_pedido_finalizado">
-				<Deletions>
-					<Trigger CondName="c_pagamento_recusado" TransName="t_emitir_notificacao_recusa" Period="5s" />
-					<Trigger CondName="c_recusa_notificada" TransName="t_processar_pagamento" Period="5s" />
-					<Trigger CondName="c_tentativa_excedida" TransName="t_abortar_venda" Period="5s" />
-					<Trigger CondName="c_pedido_tratado" TransName="t_fechar_pedido" Period="1s" />
-				</Deletions>
-
-				<Insertions>
-					<Trigger CondName="c_pagamento_recusado" TransName="t_abortar_venda" Period="5s" />
-					<Trigger CondName="c_produto_enviado" TransName="t_atualizar_estoque" Period="3s" />
-					<Trigger CondName="c_pedido_e_estoque_tratados" TransName="t_fechar_pedido" Period="1s" />
-				</Insertions>
-			</Flow>
-		</Updates>
+		<Flow Name="venda_livro" FinalStateCondName="c_pedido_finalizado">
+			<Deletions>
+				<Trigger CondName="c_pagamento_recusado" TransName="t_emitir_notificacao_recusa" Period="5s" />
+				<Trigger CondName="c_recusa_notificada" TransName="t_processar_pagamento" Period="5s" />
+				<Trigger CondName="c_tentativa_excedida" TransName="t_abortar_venda" Period="5s" />
+				<Trigger CondName="c_pedido_tratado" TransName="t_fechar_pedido" Period="1s" />
+			</Deletions>
+			<Insertions>
+				<Trigger CondName="c_pagamento_recusado" TransName="t_abortar_venda" Period="5s" />
+				<Trigger CondName="c_produto_enviado" TransName="t_atualizar_estoque" Period="3s" />
+				<Trigger CondName="c_pedido_e_estoque_tratados" TransName="t_fechar_pedido" Period="1s" />
+			</Insertions>
+		</Flow>
 	</WED-flows>
-</WED-flow-update-schema>
+</WED-flow-initial-schema>
