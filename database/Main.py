@@ -23,7 +23,7 @@ Base.metadata.create_all(engine)
 
 
 '''
-Exemplo de inserção de dados nas tabelas
+Exemplo de insercao de dados nas tabelas
 
 Session = sessionmaker(bind=engine)
 

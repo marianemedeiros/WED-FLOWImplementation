@@ -20,4 +20,4 @@ class Instance(Base):
     wed_flow = relationship("WED_flow", back_populates="instance")
     wed_state = relationship("WED_state", back_populates="instance")
     interruption = relationship("Interruption", back_populates="instance")
-history_entry = relationship("History_entry", back_populates="instance")
+    history_entry = relationship("History_entry", back_populates="instance")
