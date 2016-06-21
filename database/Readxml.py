@@ -1,7 +1,10 @@
 import xmltodict
-from model_bd import *
 import settings
-
+from WED_condition import *
+from WED_flow import *
+from WED_state import *
+from WED_transition import *
+from WED_trigger import *
 
 class Readxml:
 
@@ -25,11 +28,20 @@ class Readxml:
             if isinstance(predicates, list):
                 pred = ''
                 for text in predicates:
-                    pred = pred + text['#text']
+                    pred = pred + "- " + text['#text'].replace(" = ",",").replace("\"","") + ",=" 
             else:
-                pred = predicates['#text']
+                pred = "- " + predicates['#text'].replace(" = ",",").replace("\"","") + ",="
+            
             expression = data_conditions['Expression']
-            wed_condition = WED_condition(name=name, predicates=pred, expression=expression)
+
+            if("AND" in expression):
+                expr = expression.replace(" AND "," ") + " and"
+            elif("OR" in expression):
+                expr = expression.replace(" OR "," ") + " or"
+            else:
+                expr = expression
+
+            wed_condition = WED_condition(name=name, predicates=pred, expression=expr)
             list_obj_cond.append(wed_condition);
         return list_obj_cond
 
@@ -44,7 +56,7 @@ class Readxml:
         d = dict()
         d = self.dict_xml['WED-flow-initial-schema']['WED-flows']['Flow']
         list_obj_cond = list()
-        for data_flows in d:
+        #for data_flows in d:
             
         #print(d)
         return d

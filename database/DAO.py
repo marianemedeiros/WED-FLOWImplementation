@@ -25,38 +25,12 @@ class DAO:
         Base.metadata.create_all(self.engine)
 
     def insert(self):
-        dict_data = self.readxml.data_wed_conditions()
-        for name in dict_data:
-            print(name['@Name'])
-            #print(name['Predicate'])
-            
-            predicates = name['Predicate']
-            if isinstance(predicates, list):
-                for text in predicates:
-                    '''cliente = "invalido" '''
-                    '''- cliente,invalido,='''
-                    vetor = "- " + text['#text'].replace(" = ",",").replace("\"","") + ",="
-                    print(vetor)
-            else:
-                print(predicates['#text'])
-
-            expression = name['Expression']
-            #print (expression)
-            if("AND" in expression):
-                expr = expression.replace(" AND "," ") + " and"
-            elif("OR" in expression):
-                expr = expression.replace(" OR "," ") + " or"
-            else:
-                expr = expression
-
-            print("-- " + expr)
-
             Session = sessionmaker(bind=self.engine)
             session = Session()  
             
-            wed_condition = WED_condition(name=name['@Name'], predicates=vetor, expression=expr)
-            #wed_flow = WED_flow(name="teste",wed_condition=wed_condition);
-            session.add(wed_condition)
+            listConditions = self.readxml.data_wed_conditions();
+            for condition in listConditions:
+                session.add(condition)
             session.commit()
 
 teste = DAO()
