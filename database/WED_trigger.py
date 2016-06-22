@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, Column, create_engine, ForeignKey, String, DateTime, Boolean
+from sqlalchemy import Integer, Column, create_engine, ForeignKey, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from Associations import *
@@ -9,7 +9,6 @@ from WED_condition import *
 
 engine = None
 session = None
-
 
 ''' verificar se o tipo period eh mesmo string '''
 class WED_trigger(Base):

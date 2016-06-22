@@ -1,5 +1,4 @@
 import xmltodict
-import settings
 from WED_condition import *
 from WED_flow import *
 from WED_state import *
@@ -47,8 +46,22 @@ class Readxml:
 
     def data_wed_transitions(self):
         d = dict()
-        d = self.dict_xml['WED-flow-initial-schema']['WED-transitions']        
-        return d
+        d = self.dict_xml['WED-flow-initial-schema']['WED-transitions']['Transition']    
+        list_obj_transition = list()
+        for data_transitions in d:
+            name = data_transitions['@Name']
+            print(name)
+            up_att = data_transitions['UpdatedAttribute']
+            if isinstance(up_att, list):
+                attrname = ''
+                for att in up_att:
+                    attrname = attrname + att['@AttrName'] + ' '
+            else:
+                attrname = (up_att['@AttrName'])
+
+            wed_transition = WED_transition(name=name)
+            list_obj_transition.append(wed_transition)
+        return list_obj_transition
 
     def data_wed_flows(self):
         d = dict()
@@ -62,15 +75,12 @@ class Readxml:
                 print(tgg['@CondName'])
                 print(tgg['@TransName'])
                 print(tgg['@Period'])
-            #wed_flow = WED_flow(name = name, );
+            # dao = DAO()
+            # result = dao.select_test()
+            # final_condition  = result[0]
+            #wed_flow = WED_flow(name = name, final_condition = final_condition)
             #list_obj_flow.append(wed_flow)
         return list_obj_flow
 
-    def data_wed_AWICs(self):
-        d = dict()
-        d = self.dict_xml['WED-flow-initial-schema']['AWICs']
-        #print(d)
-        return d
-
 #teste = Readxml('../xml/B1.xml')
-#teste.data_wed_flows()
+# teste.data_wed_flows()
