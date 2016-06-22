@@ -48,18 +48,23 @@ class Readxml:
     def data_wed_transitions(self):
         d = dict()
         d = self.dict_xml['WED-flow-initial-schema']['WED-transitions']        
-
-
         return d
 
     def data_wed_flows(self):
         d = dict()
-        d = self.dict_xml['WED-flow-initial-schema']['WED-flows']['Flow']
-        list_obj_cond = list()
-        #for data_flows in d:
-            
-        #print(d)
-        return d
+        d = self.dict_xml['WED-flow-initial-schema']['WED-flows']
+        list_obj_flow = list()
+        for data_flows in d:
+            name = d['Flow']['@Name']
+            wed_condition = d['Flow']['@FinalStateCondName']
+            triggers = d['Flow']['Trigger']
+            for tgg in triggers:
+                print(tgg['@CondName'])
+                print(tgg['@TransName'])
+                print(tgg['@Period'])
+            #wed_flow = WED_flow(name = name, );
+            #list_obj_flow.append(wed_flow)
+        return list_obj_flow
 
     def data_wed_AWICs(self):
         d = dict()
@@ -67,5 +72,5 @@ class Readxml:
         #print(d)
         return d
 
-teste = Readxml('../xml/B1.xml')
-teste.data_wed_conditions()
+#teste = Readxml('../xml/B1.xml')
+#teste.data_wed_flows()

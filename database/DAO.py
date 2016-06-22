@@ -20,18 +20,32 @@ class DAO:
     def __init__(self):
         self.engine = create_engine(URL(**settings.DATABASE))
         self.readxml = Readxml('../xml/B1.xml')
+        Session = sessionmaker(bind=self.engine)
+        self.session = Session()    
+
+    def __del__(self):
+        self.session.close_all()
+        self.engine
 
     def create_tables(self):
         Base.metadata.create_all(self.engine)
 
-    def insert(self):
-            Session = sessionmaker(bind=self.engine)
-            session = Session()  
-            
-            listConditions = self.readxml.data_wed_conditions();
-            for condition in listConditions:
-                session.add(condition)
-            session.commit()
+    def drop_tables(self):
+        Base.metadata.drop_all(self.engine)
 
-teste = DAO()
-teste.insert()      
+    def insert_wed_conditions(self):
+        listConditions = self.readxml.data_wed_conditions();
+        for condition in listConditions:
+            self.session.add(condition)
+            self.session.commit()
+
+    def select_test(self):
+        result = self.session.execute(
+            "SELECT id FROM wed_condition WHERE name = 'c_pedido_finalizado'"
+        ).fetchall()
+        return result
+
+# dao = DAO()
+# listResult = dao.select_test()
+# for l in listResult:
+#     print(l[0])
