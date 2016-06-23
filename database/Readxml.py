@@ -10,12 +10,16 @@ class Readxml:
     def __init__(self, path_file_xml):
         xml_file = open(path_file_xml)
         self.dict_xml = xmltodict.parse(xml_file.read())
+        self.dao = None
 
     def data_wed_attributes(self):
         d = dict()
         d = self.dict_xml['WED-flow-initial-schema']['WED-attributes']['Attribute']
         #print(d)       
         return d
+
+    def set_dao(self, dao):
+        self.dao = dao
 
     def data_wed_conditions(self):
         d = dict()
@@ -75,12 +79,13 @@ class Readxml:
                 print(tgg['@CondName'])
                 print(tgg['@TransName'])
                 print(tgg['@Period'])
-            # dao = DAO()
-            # result = dao.select_test()
-            # final_condition  = result[0]
-            #wed_flow = WED_flow(name = name, final_condition = final_condition)
-            #list_obj_flow.append(wed_flow)
+            result = self.dao.select_test(wed_condition)
+            print(result)
+            exit(0)
+            final_condition  = result[0]
+            wed_flow = WED_flow(name = name, final_condition = final_condition)
+            list_obj_flow.append(wed_flow)
         return list_obj_flow
 
 #teste = Readxml('../xml/B1.xml')
-# teste.data_wed_flows()
+#teste.data_wed_flows()
