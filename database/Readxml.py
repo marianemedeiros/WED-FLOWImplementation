@@ -47,10 +47,14 @@ class Readxml:
 
     def data_wed_transitions(self):
         d = dict()
-        d = self.dict_xml['WED-flow-initial-schema']['WED-transitions']        
+        d = self.dict_xml['WED-flow-initial-schema']['WED-transitions']['Transition']       
+        list_obj_trans = list()
+        for data_transitions in d:
+            name = data_transitions['@Name']
 
-
-        return d
+            wed_transition = WED_transition(name=name)
+            list_obj_trans.append(wed_transition)
+        return list_obj_trans
 
     def data_wed_flows(self):
         d = dict()
@@ -68,4 +72,4 @@ class Readxml:
         return d
 
 teste = Readxml('../xml/B1.xml')
-teste.data_wed_conditions()
+teste.data_wed_transitions()
