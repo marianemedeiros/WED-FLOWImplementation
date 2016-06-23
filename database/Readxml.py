@@ -1,3 +1,4 @@
+import sys
 import xmltodict
 from WED_condition import *
 from WED_flow import *
@@ -49,15 +50,21 @@ class Readxml:
         d = self.dict_xml['WED-flow-initial-schema']['WED-transitions']['Transition']    
         list_obj_transition = list()
         for data_transitions in d:
+            attributes = list()
             name = data_transitions['@Name']
-            print(name)
             up_att = data_transitions['UpdatedAttribute']
             if isinstance(up_att, list):
                 attrname = ''
                 for att in up_att:
                     attrname = attrname + att['@AttrName'] + ' '
+                    attributes.append(att['@AttrName'])
             else:
                 attrname = (up_att['@AttrName'])
+                attributes.append(up_att['@AttrName'])
+
+            print(name)
+            print(attributes)
+            Readxml.generate_class(name, attributes)
 
             wed_transition = WED_transition(name=name)
             list_obj_transition.append(wed_transition)
@@ -82,5 +89,23 @@ class Readxml:
             #list_obj_flow.append(wed_flow)
         return list_obj_flow
 
+    def generate_class(name, attributes):
+        strAtt = ''
+        for att in attributes:
+            if len(attributes) == 1:
+                strAtt = att + ':' + att
+            else:
+                strAtt = strAtt + att + ':\'' + att + '\', '
+                if att == attributes[-1]:
+                    strAtt = strAtt + att + ':\'' + att + '\''
+
+        body_class =   'class '+ name +'():\n'\
+                     + '    def run():\n'\
+                     + '        return {'+strAtt+'}'
+        #print(body_class)
+        file = open('transitions/'+name+'.py','w')
+        file.write(body_class)
+        file.close()
+
 #teste = Readxml('../xml/B1.xml')
-# teste.data_wed_flows()
+#teste.data_wed_transitions()
