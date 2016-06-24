@@ -32,6 +32,10 @@ class DAO:
             self.session.add(transitions)
             self.session.commit()
                                 
+        list_attributes = self.readxml.data_wed_attributes()
+        for attributes in list_attributes:
+            self.session.add(attributes)
+            self.session.commit()
 
     def select_test(self):
         result = self.session.execute(
