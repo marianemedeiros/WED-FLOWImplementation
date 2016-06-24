@@ -5,6 +5,7 @@ from WED_flow import *
 from WED_state import *
 from WED_transition import *
 from WED_trigger import *
+from WED_attribute import *
 
 class Readxml:
 
@@ -12,11 +13,41 @@ class Readxml:
         xml_file = open(path_file_xml)
         self.dict_xml = xmltodict.parse(xml_file.read())
 
+    def alter_table_state(self, attributes):
+        data = ''
+        for attr in attributes:
+            if(attr.type_ == 'string'):
+                data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + '(50))\n'
+            else:
+                data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + ')\n'
+
+        print(data)
+
+        state_file = open('WED_state.py', 'r')
+        data_file = state_file.read()
+        #favor não retirar o tab da string abaixo
+        new_data = data_file.replace('    attribute = Column(String(50))', '\n'+data)
+        state_file.close()
+
+        state_file = open('WED_state.py', 'w')
+        state_file.write(new_data)
+        state_file.close()
+
+        #print(new_data)
+
     def data_wed_attributes(self):
         d = dict()
         d = self.dict_xml['WED-flow-initial-schema']['WED-attributes']['Attribute']
-        #print(d)       
-        return d
+        list_obj_attr = list()
+        for data_attributes in d:
+            name = data_attributes['@Name']
+            type_ = data_attributes['@Type']
+
+            wed_attributes = WED_attribute(name=name, type_=type_)
+            list_obj_attr.append(wed_attributes);
+
+        Readxml.alter_table_state(self,list_obj_attr)
+        return list_obj_attr
 
     def data_wed_conditions(self):
         d = dict()
@@ -62,8 +93,8 @@ class Readxml:
                 attrname = (up_att['@AttrName'])
                 attributes.append(up_att['@AttrName'])
 
-            print(name)
-            print(attributes)
+            #print(name)
+            #print(attributes)
             Readxml.generate_class(name, attributes)
 
             wed_transition = WED_transition(name=name)
@@ -107,5 +138,5 @@ class Readxml:
         file.write(body_class)
         file.close()
 
-#teste = Readxml('../xml/B1.xml')
-#teste.data_wed_transitions()
+teste = Readxml('../xml/B1.xml')
+teste.data_wed_attributes()
