@@ -34,19 +34,35 @@ class DAO:
         list_transitions = self.readxml.data_wed_transitions()
         for transitions in list_transitions:
             self.session.add(transitions)
+            self.session.commit()    
+                
+        list_flows = self.readxml.data_wed_flows()
+        for flows in list_flows:
+            self.session.add(flows)
             self.session.commit()        
 
-        # list_flows = self.readxml.data_wed_flows()
-        # for flows in list_flows:
-        #     self.session.add(flows)
-        #     self.session.commit()        
+        list_trigger = self.readxml.data_wed_trigger()
+        for trigger in list_trigger:
+            self.session.add(trigger)
+            self.session.commit()    
 
-    def select_test(self, wed_condition):
+    def select_condition(self, wed_condition):
         result = self.session.execute(
             "SELECT id FROM wed_condition WHERE name = '" + wed_condition + "'"
-        ).fetchall()
+        ).fetchone()
         return result
 
+    def select_transition(self, wed_transition):
+        result = self.session.execute(
+            "SELECT id FROM wed_transition WHERE name = '" + wed_transition + "'"
+        ).fetchone()
+        return result
+
+    def select_flow(self, wed_flow):
+        result = self.session.execute(
+            "SELECT id FROM wed_flow WHERE name = '" + wed_flow + "'"
+        ).fetchone()
+        return result        
 #dao = DAO()
 #b = Readxml('../xml/B1.xml')
 #dao.set_readxml(b)

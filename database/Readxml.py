@@ -54,7 +54,6 @@ class Readxml:
         list_obj_transition = list()
         for data_transitions in d:
             name = data_transitions['@Name']
-            print(name)
             up_att = data_transitions['UpdatedAttribute']
             if isinstance(up_att, list):
                 attrname = ''
@@ -74,18 +73,28 @@ class Readxml:
         for data_flows in d:
             name = d['Flow']['@Name']
             wed_condition = d['Flow']['@FinalStateCondName']
-            triggers = d['Flow']['Trigger']
-            for tgg in triggers:
-                print(tgg['@CondName'])
-                print(tgg['@TransName'])
-                print(tgg['@Period'])
-            result = self.dao.select_test(wed_condition)
-            print(result)
-            exit(0)
+            result = self.dao.select_condition(wed_condition)
             final_condition  = result[0]
-            wed_flow = WED_flow(name = name, final_condition = final_condition)
+            wed_flow = WED_flow(name = name, final_condition =final_condition)
             list_obj_flow.append(wed_flow)
         return list_obj_flow
 
+    def data_wed_trigger(self):
+        d = dict()
+        d = self.dict_xml['WED-flow-initial-schema']['WED-flows']
+        list_obj_trigger = list()
+        for data_flows in d:
+            result_flow = self.dao.select_flow(d['Flow']['@Name'])
+            flow_id = result_flow[0]
+            triggers = d['Flow']['Trigger']
+            for tgg in triggers:
+                result_cond_id = self.dao.select_condition(tgg['@CondName'])
+                cond_id = result_cond_id[0]
+                result_trans_id = self.dao.select_transition(tgg['@TransName'])
+                trans_id = result_trans_id[0]
+                period  = tgg['@Period']
+                wed_trigger = WED_trigger( wed_condition_id = cond_id, wed_transition_id = trans_id, wed_flow_id = flow_id, active ='TRUE' , period = period)
+                list_obj_trigger.append(wed_trigger)
+        return list_obj_trigger
 #teste = Readxml('../xml/B1.xml')
 #teste.data_wed_flows()
