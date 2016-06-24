@@ -14,7 +14,6 @@ class WED_state(Base):
     __tablename__ = 'wed_state'
     id = Column(Integer, primary_key = True)
     create_at = Column (DateTime)
-    attribute = Column(String(50))
     instance_id = Column(Integer, ForeignKey('instance.id'))
     instance = relationship("Instance", back_populates="wed_state")
     wed_trigger = relationship("WED_trigger", secondary=wedState_wedTrigger, back_populates="wed_state")
