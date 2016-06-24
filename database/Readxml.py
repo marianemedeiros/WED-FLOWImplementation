@@ -12,6 +12,7 @@ class Readxml:
     def __init__(self, path_file_xml):
         xml_file = open(path_file_xml)
         self.dict_xml = xmltodict.parse(xml_file.read())
+        self.dao = None
 
     def alter_table_state(self, attributes):
         data = ''
@@ -48,6 +49,9 @@ class Readxml:
 
         Readxml.alter_table_state(self,list_obj_attr)
         return list_obj_attr
+
+    def set_dao(self, dao):
+        self.dao = dao
 
     def data_wed_conditions(self):
         d = dict()
@@ -108,16 +112,10 @@ class Readxml:
         for data_flows in d:
             name = d['Flow']['@Name']
             wed_condition = d['Flow']['@FinalStateCondName']
-            triggers = d['Flow']['Trigger']
-            for tgg in triggers:
-                print(tgg['@CondName'])
-                print(tgg['@TransName'])
-                print(tgg['@Period'])
-            # dao = DAO()
-            # result = dao.select_test()
-            # final_condition  = result[0]
-            #wed_flow = WED_flow(name = name, final_condition = final_condition)
-            #list_obj_flow.append(wed_flow)
+            result = self.dao.select_condition(wed_condition)
+            final_condition  = result[0]
+            wed_flow = WED_flow(name = name, final_condition =final_condition)
+            list_obj_flow.append(wed_flow)
         return list_obj_flow
 
     def generate_class(name, attributes):
@@ -138,5 +136,23 @@ class Readxml:
         file.write(body_class)
         file.close()
 
-teste = Readxml('../xml/B1.xml')
-teste.data_wed_attributes()
+    def data_wed_trigger(self):
+        d = dict()
+        d = self.dict_xml['WED-flow-initial-schema']['WED-flows']
+        list_obj_trigger = list()
+        for data_flows in d:
+            result_flow = self.dao.select_flow(d['Flow']['@Name'])
+            flow_id = result_flow[0]
+            triggers = d['Flow']['Trigger']
+            for tgg in triggers:
+                result_cond_id = self.dao.select_condition(tgg['@CondName'])
+                cond_id = result_cond_id[0]
+                result_trans_id = self.dao.select_transition(tgg['@TransName'])
+                trans_id = result_trans_id[0]
+                period  = tgg['@Period']
+                wed_trigger = WED_trigger( wed_condition_id = cond_id, wed_transition_id = trans_id, wed_flow_id = flow_id, active ='TRUE' , period = period)
+                list_obj_trigger.append(wed_trigger)
+        return list_obj_trigger
+
+#teste = Readxml('../xml/B1.xml')
+#teste.data_wed_attributes()
