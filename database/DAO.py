@@ -20,12 +20,33 @@ class DAO:
         self.readxml = readxml
 
     def create_tables(self):
-        Base.metadata.create_all(self.engine)
+        #Base.metadata.create_all(self.engine)
+        WED_attribute.__table__.create(self.engine)
+        WED_condition.__table__.create(self.engine)
+        WED_transition.__table__.create(self.engine)
+        WED_flow.__table__.create(self.engine)
+        WED_trigger.__table__.create(self.engine)
+        Instance.__table__.create(self.engine)
+        #tabelas history e instance será criadas depois da wed_state
+        #History_entry.__table__.create(self.engine)
+        #Interruption.__table__.create(self.engine)
+
+        #wedState_wedTrigger
 
     def drop_tables(self):
         Base.metadata.drop_all(self.engine)
 
     def insert(self):
+        list_attributes = self.readxml.data_wed_attributes()
+        for attributes in list_attributes:
+            self.session.add(attributes)
+            self.session.commit()
+
+        # depois de ler os wed_attributes cria a tabela wed_state, como History tem relacionamento com
+        # wed-state, entao cria ele depois do wed_state e Interruption tem relacionamento com
+        # History entao cria tbn.
+        DAO.create_necessary_tables(self)
+        
         list_conditions = self.readxml.data_wed_conditions()
         for condition in list_conditions:
             self.session.add(condition)
@@ -36,11 +57,6 @@ class DAO:
             self.session.add(transitions)
             self.session.commit()
                                 
-        list_attributes = self.readxml.data_wed_attributes()
-        for attributes in list_attributes:
-            self.session.add(attributes)
-            self.session.commit()
-                
         list_flows = self.readxml.data_wed_flows()
         for flows in list_flows:
             self.session.add(flows)
@@ -51,6 +67,12 @@ class DAO:
             self.session.add(trigger)
             self.session.commit()    
 
+    def create_necessary_tables(self):
+        WED_state.__table__.create(self.engine)
+        History_entry.__table__.create(self.engine)
+        Interruption.__table__.create(self.engine)
+        wedState_wedTrigger.create(self.engine)
+  
     def select_condition(self, wed_condition):
         result = self.session.execute(
             "SELECT id FROM wed_condition WHERE name = '" + wed_condition + "'"
