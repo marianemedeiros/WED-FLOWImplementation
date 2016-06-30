@@ -1,11 +1,11 @@
 from sqlalchemy import Integer, Column, create_engine, ForeignKey, String, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from Associations import *
-from WED_flow import *
-from WED_state import *
-from Interruption import *
-from History_entry import *
+from database.Associations import *
+from database.WED_flow import *
+from database.WED_state import *
+from database.Interruption import *
+from database.History_entry import *
 
 engine = None
 session = None
