@@ -92,9 +92,14 @@ class DAO:
         Associations.wedState_wedTrigger.create(self.engine)
   
     def select_condition(self, wed_condition):
-        result = self.session.execute(
-            "SELECT id FROM wed_condition WHERE name = '" + wed_condition + "'"
-        ).fetchone()
+        print("sjasiofoĺsdjflasjflasjdflasjklfjsadlfjsldfjdskljfdsljfdsljfas")
+        result = self.session.query(WED_condition).filter_by(name = wed_condition)
+        # dao.session.query(WED_condition).filter_by(name = "c_novo_pedido")
+        # result = self.session.execute(
+        #     "SELECT id FROM wed_condition WHERE name = '" + wed_condition + "'"
+        # ).fetchone()
+        print("AAAAAAAAAAAAAAAAAAAAAASDDSADSADASAS")
+        len(result)
         return result
 
     def select_transition(self, wed_transition):

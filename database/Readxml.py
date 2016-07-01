@@ -120,7 +120,7 @@ class Readxml:
             name = d['Flow']['@Name']
             wed_condition = d['Flow']['@FinalStateCondName']
             result = self.dao.select_condition(wed_condition)
-            final_condition  = result[0]
+            final_condition  = result
             wed_flow = WED_flow(name = name, final_condition =final_condition)
             list_obj_flow.append(wed_flow)
         return list_obj_flow
