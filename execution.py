@@ -17,7 +17,8 @@ import time
 
 
 def avalia_trigger(condition, state, dao):
-    dao.select_condition(condition.id)
+    print("aaaaaa")
+    print(dao.select_condition(condition.id))
 
     
 
