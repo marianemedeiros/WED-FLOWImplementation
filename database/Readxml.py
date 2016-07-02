@@ -157,6 +157,7 @@ class Readxml:
                 result_trans_id = self.dao.select_transition(tgg['@TransName'])
                 trans_id = result_trans_id[0]
                 period  = tgg['@Period']
+                period = int(period[0])
                 wed_trigger = WED_trigger( wed_condition_id = cond_id, wed_transition_id = trans_id, wed_flow_id = flow_id, active ='TRUE' , period = period)
                 list_obj_trigger.append(wed_trigger)
         return list_obj_trigger

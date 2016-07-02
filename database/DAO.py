@@ -48,11 +48,19 @@ class DAO:
         #tabelas history e instance será criadas depois da wed_state
         #History_entry.__table__.create(self.engine)
         #Interruption.__table__.create(self.engine)
-
         #wedState_wedTrigger
 
     def drop_tables(self):
-        #Base.metadata.drop_all(self.engine)        
+        Associations.wedState_wedTrigger.drop(self.engine)
+        Interruption.__table__.drop(self.engine)
+        History_entry.__table__.drop(self.engine)
+        WED_state.__table__.drop(self.engine)
+        Instance.__table__.drop(self.engine)
+        WED_trigger.__table__.drop(self.engine)
+        WED_flow.__table__.drop(self.engine)
+        WED_transition.__table__.drop(self.engine)
+        WED_condition.__table__.drop(self.engine)
+        WED_attribute.__table__.drop(self.engine)
 
     def insert(self):
         list_attributes = self.readxml.data_wed_attributes()
