@@ -12,9 +12,9 @@ import time
     # Inserir o novo estado nas filas
 
 def avalia_trigger(condition, state, dao):
-    print(dao.select_condition(condition.name))
+    
 
-def make_func(t, dao):
+def make_func(trigger, dao):
     def _function():
         '''
         recuper a fila da trigger X
@@ -22,18 +22,18 @@ def make_func(t, dao):
         se true: dispara a transition
         '''
 
-        fila = dao.select_fila(t.id)
+        fila = dao.select_fila(trigger.id)
         # update status para processando
         for i in fila:
             #r = avalia_trigger(t.wed_condition, dao.select_state(fila.wed_state_id), dao)
-            r = avalia_trigger(t.wed_condition, dao.select_state(fila.wed_state_id), dao)
-            if(r == True):
+            result = avalia_trigger(trigger.wed_condition, dao.select_state(i.wed_state_id), dao)
+            if(result == True):
                 pass
                 # Criar a entrada no history_entry
                 # dispara transition (a transition atualiza o history_entry)
 
             # update para processado (finish)
-        print('t_'+str(t.id) + ': Funcionou')
+        print('t_'+str(trigger.id) + ': Funcionou')
     return _function
 
 
