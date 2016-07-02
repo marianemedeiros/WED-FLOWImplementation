@@ -24,11 +24,41 @@ def make_func(t, dao):
         se true: dispara a transition
         '''
 
-        fila = dao.select_fila(t.id)
-        # update status para processando
+        
+        fila = dao.select_fila(t.id).filter_by(status = "started").all()
+        
+        # update status para processando (feito)
+        for i in fila:
+            fila.status = "processing"
+        dao.session.commit()
+
+
+        # status = Column(String(50))
+        # create_at = Column (DateTime)
+        # completed_at =  Column (DateTime)
+        # instance_id = Column(Integer, ForeignKey('instance.id'))
+        # instance = relationship("Instance", back_populates="history_entry")
+
+        # initial_state_id = Column(Integer, ForeignKey('wed_state.id'))
+        # current_state_id = Column(Integer, ForeignKey('wed_state.id'))
+
+        # initial_state = relationship("WED_state", foreign_keys = [initial_state_id])
+        # current_state = relationship("WED_state", foreign_keys = [current_state_id])
+
+
+        # final_state_id = Column(Integer, ForeignKey('wed_state.id'))
+        # final_state = relationship("WED_state", foreign_keys = [final_state_id])
+
+      
+        # interruption = relationship("Interruption", uselist=False, back_populates="history_entry")
+        # wed_transition_id = Column(Integer, ForeignKey('wed_transition.id'))
+        # wed_transition = relationship("WED_transition", back_populates="history_entry")
+
+        
         for i in fila:
             r = avalia_trigger(t.condition, dao.select_state(fila.wed_state_id), dao)
             if(r == True):
+                history_entry = History_entry()
                 pass
                 # Criar a entrada no history_entry
                 # dispara transition (a transition atualiza o history_entry)
