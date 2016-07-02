@@ -101,35 +101,37 @@ class DAO:
   
     def select_condition(self, wed_condition = None):
         if wed_condition == None:
-            result = self.session.query(WED_condition)
+            result = self.session.query(WED_condition).all()
         else:
-            result = self.session.query(WED_condition).filter_by(name = wed_condition)
+            result = self.session.query(WED_condition).filter_by(name = wed_condition).all()
         return result
 
-    def select_transition(self, wed_transition):
-        result = self.session.execute(
-            "SELECT id FROM wed_transition WHERE name = '" + wed_transition + "'"
-        ).fetchone()
+    def select_transition(self, wed_transition = None):
+        if wed_transition == None:
+            result = self.session.query(WED_transition).all()
+        else:
+            result = self.session.query(WED_transition).filter_by(name = wed_transition).all()
         return result
 
-    def select_flow(self, wed_flow):
-        result = self.session.execute(
-            "SELECT id FROM wed_flow WHERE name = '" + wed_flow + "'"
-        ).fetchone()
-        return result     
+    def select_flow(self, wed_flow = None):
+        if wed_flow == None:
+            result = self.session.query(WED_flow).all()
+        else:
+            result = self.session.query(WED_flow).filter_by(name = wed_flow).all()
+        return result 
 
     def select_trigger(self):
-        return self.session.query(WED_trigger)
+        return self.session.query(WED_trigger).all()
 
     def select_fila(self, trigger_id):
         return self.session.query(Associations.wedState_wedTrigger).filter_by\
-                (wed_trigger_id = trigger_id)
+                (wed_trigger_id = trigger_id).all()
 
     def select_state(self, state_id):
-        return self.session.query(WED_state).filter_by(id = state_id)
+        return self.session.query(WED_state).filter_by(id = state_id).all()
 
     # def select_condition(self, condition_id):
     #     return self.session.query(WED_condition).filter_by(id = condition_id)
 
     def select_wedflow2(self, wedflow_id):
-        return self.session.query(WED_flow).filter_by(id=wedflow_id)
+        return self.session.query(WED_flow).filter_by(id=wedflow_id).all()
