@@ -52,7 +52,7 @@ class DAO:
         #wedState_wedTrigger
 
     def drop_tables(self):
-        Base.metadata.drop_all(self.engine)
+        #Base.metadata.drop_all(self.engine)        
 
     def insert(self):
         list_attributes = self.readxml.data_wed_attributes()

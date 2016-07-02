@@ -7,5 +7,5 @@ readxml.set_dao(dao)
 dao.set_readxml(readxml)
 
 dao.drop_tables()
-dao.create_tables()
-dao.insert()
+#dao.create_tables()
+#dao.insert()
