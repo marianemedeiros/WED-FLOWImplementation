@@ -15,4 +15,4 @@ class WED_trigger(Base):
     wed_flow_id = Column(Integer, ForeignKey('wed_flow.id'))
     wed_flow = relationship("WED_flow", back_populates="wed_trigger")    
     active = Column(String(50))
-    period = Column(String(50))
+    period = Column(Integer)
