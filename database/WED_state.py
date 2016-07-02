@@ -19,3 +19,4 @@ class WED_state(Base):
     instance_id = Column(Integer, ForeignKey('instance.id'))
     instance = relationship("Instance", back_populates="wed_state")
     wed_trigger = relationship("WED_trigger", secondary=wedState_wedTrigger, back_populates="wed_state")
+    
