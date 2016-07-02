@@ -12,7 +12,7 @@ import time
     # Inserir o novo estado nas filas
 
 def avalia_trigger(condition, state, dao):
-    
+    pass
 
 def make_func(trigger, dao):
     def _function():
