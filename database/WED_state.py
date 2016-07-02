@@ -16,8 +16,12 @@ class WED_state(Base):
     id_pedido= Column(Integer)
     pedido= Column(String(50))
     pagamento= Column(String(50))
+
     instance_id = Column(Integer, ForeignKey('instance.id'))
-    instance = relationship("Instance", back_populates="wed_state")
-    #instance_id2 = Column(Integer, ForeignKey('instance.id'))
-    #instance2 = relationship("Instance", back_populates="wed_state")
+    instance = relationship("Instance", foreign_keys=[instance_id])
+
+    instance_id2 = Column(Integer, ForeignKey('instance.id'))
+    instance2 = relationship("Instance", foreign_keys=[instance_id2])
+
     wed_trigger = relationship("WED_trigger", secondary=wedState_wedTrigger, back_populates="wed_state")
+    

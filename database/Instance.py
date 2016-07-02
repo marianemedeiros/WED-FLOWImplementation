@@ -18,11 +18,10 @@ class Instance(Base):
     finalized_at =  Column (DateTime)
     wed_flow_id = Column(Integer, ForeignKey('wed_flow.id'))
     wed_flow = relationship("WED_flow", back_populates="instance")
-    wed_state = relationship("WED_state", back_populates="instance")
+    #wed_state = relationship("WED_state", back_populates="instance")
     interruption = relationship("Interruption", back_populates="instance")
     history_entry = relationship("History_entry", back_populates="instance")
 
 
-
-    #current_state_id = Column(Integer, ForeignKey('wed_state.id'))
-    #current_state = relationship("WED_state", foreign_keys = [current_state_id])
+    # current_state_id = Column(Integer, ForeignKey('wed_state.id'))
+    # current_state = relationship("WED_state", foreign_keys = [current_state_id])
