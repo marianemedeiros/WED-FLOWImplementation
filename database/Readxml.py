@@ -120,7 +120,7 @@ class Readxml:
             name = d['Flow']['@Name']
             wed_condition = d['Flow']['@FinalStateCondName']
             result = self.dao.select_condition(wed_condition)
-            final_condition  = result
+            final_condition  = result[0].id
             wed_flow = WED_flow(name = name, final_condition =final_condition)
             list_obj_flow.append(wed_flow)
         return list_obj_flow
@@ -153,7 +153,7 @@ class Readxml:
             triggers = d['Flow']['Trigger']
             for tgg in triggers:
                 result_cond_id = self.dao.select_condition(tgg['@CondName'])
-                cond_id = result_cond_id[0]
+                cond_id = result_cond_id[0].id
                 result_trans_id = self.dao.select_transition(tgg['@TransName'])
                 trans_id = result_trans_id[0]
                 period  = tgg['@Period']
