@@ -12,10 +12,7 @@ import time
     # Inserir o novo estado nas filas
 
 def avalia_trigger(condition, state, dao):
-    print("aaaaaa")
-    print(dao.select_condition(condition.id))
-
-    
+    print(dao.select_condition(condition.name))
 
 def make_func(t, dao):
     def _function():
@@ -28,7 +25,8 @@ def make_func(t, dao):
         fila = dao.select_fila(t.id)
         # update status para processando
         for i in fila:
-            r = avalia_trigger(t.condition, dao.select_state(fila.wed_state_id), dao)
+            #r = avalia_trigger(t.wed_condition, dao.select_state(fila.wed_state_id), dao)
+            r = avalia_trigger(t.wed_condition, dao.select_state(fila.wed_state_id), dao)
             if(r == True):
                 pass
                 # Criar a entrada no history_entry
@@ -45,6 +43,10 @@ def make_func(t, dao):
     # wed_flow_id = Column(Integer, ForeignKey('wed_flow.id'))
 if __name__ == '__main__':
     dao = DAO()
+    for i in dao.select_trigger():
+        condition = i.wed_condition
+        print(condition.name)
+    exit(0)        
     # wedflow = dao.select_wedflow2(1)
     # ins = Instance(status = 'started', create_at = datetime.now(), wed_flow_id = wedflow[0])
     # dao.session.add(ins)
