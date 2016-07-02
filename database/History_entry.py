@@ -11,7 +11,6 @@ class History_entry(Base):
     __tablename__ = 'history_entry'
     id = Column(Integer, primary_key = True)
     status = Column(String(50))
-    consistent = Column(String(50))
     create_at = Column (DateTime)
     completed_at =  Column (DateTime)
     instance_id = Column(Integer, ForeignKey('instance.id'))

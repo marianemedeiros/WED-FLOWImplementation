@@ -149,14 +149,15 @@ class Readxml:
         list_obj_trigger = list()
         for data_flows in d:
             result_flow = self.dao.select_flow(d['Flow']['@Name'])
-            flow_id = result_flow[0]
+            flow_id = result_flow[0].id
             triggers = d['Flow']['Trigger']
             for tgg in triggers:
                 result_cond_id = self.dao.select_condition(tgg['@CondName'])
                 cond_id = result_cond_id[0].id
                 result_trans_id = self.dao.select_transition(tgg['@TransName'])
-                trans_id = result_trans_id[0]
+                trans_id = result_trans_id[0].id
                 period  = tgg['@Period']
+                period = int(period[0])
                 wed_trigger = WED_trigger( wed_condition_id = cond_id, wed_transition_id = trans_id, wed_flow_id = flow_id, active ='TRUE' , period = period)
                 list_obj_trigger.append(wed_trigger)
         return list_obj_trigger
