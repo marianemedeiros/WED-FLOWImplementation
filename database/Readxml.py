@@ -1,11 +1,15 @@
 import sys
 import xmltodict
-from WED_condition import *
-from WED_flow import *
-from WED_state import *
-from WED_transition import *
-from WED_trigger import *
-from WED_attribute import *
+
+import database.Associations
+from database.Interruption import Interruption
+from database.History_entry import History_entry
+from database.Instance import Instance
+from database.WED_attribute import WED_attribute
+from database.WED_condition import WED_condition
+from database.WED_flow import WED_flow 
+from database.WED_transition import WED_transition
+from database.WED_trigger import WED_trigger
 
 class Readxml:
 
@@ -29,13 +33,13 @@ class Readxml:
 
         #print(data)
 
-        state_file = open('WED_state.py', 'r')
+        state_file = open('database/WED_state.py', 'r')
         data_file = state_file.read()
         #favor não retirar o tab da string abaixo
         new_data = data_file.replace('    attribute = Column(String(50))', data)
         state_file.close()
 
-        state_file = open('WED_state.py', 'w')
+        state_file = open('database/WED_state.py', 'w')
         state_file.write(new_data)
         state_file.close()
 
@@ -102,7 +106,7 @@ class Readxml:
 
             #print(name)
             #print(attributes)
-            Readxml.generate_class(name, attributes)
+            # Readxml.generate_class(name, attributes)
 
             wed_transition = WED_transition(name=name)
             list_obj_transition.append(wed_transition)
@@ -116,7 +120,7 @@ class Readxml:
             name = d['Flow']['@Name']
             wed_condition = d['Flow']['@FinalStateCondName']
             result = self.dao.select_condition(wed_condition)
-            final_condition  = result[0]
+            final_condition  = result[0].id
             wed_flow = WED_flow(name = name, final_condition =final_condition)
             list_obj_flow.append(wed_flow)
         return list_obj_flow
@@ -149,7 +153,7 @@ class Readxml:
             triggers = d['Flow']['Trigger']
             for tgg in triggers:
                 result_cond_id = self.dao.select_condition(tgg['@CondName'])
-                cond_id = result_cond_id[0]
+                cond_id = result_cond_id[0].id
                 result_trans_id = self.dao.select_transition(tgg['@TransName'])
                 trans_id = result_trans_id[0]
                 period  = tgg['@Period']

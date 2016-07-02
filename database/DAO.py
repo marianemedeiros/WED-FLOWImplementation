@@ -1,12 +1,30 @@
 from sqlalchemy.engine.url import URL
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from Readxml import *
-import settings
+from database.Readxml import *
+import database.settings
+from sqlalchemy.ext.declarative import declarative_base
+Base = declarative_base()
+
+from database import Associations
+# import database.Associations
+from database.Interruption import Interruption
+from database.History_entry import History_entry
+from database.Instance import Instance
+from database.WED_attribute import WED_attribute
+from database.WED_condition import WED_condition
+from database.WED_flow import WED_flow 
+from database.WED_transition import WED_transition
+from database.WED_trigger import WED_trigger
+from database.Readxml import Readxml
+from database.WED_state import WED_state
+
+# from database.settings import *
 
 class DAO:
 
     def __init__(self):
-        self.engine = create_engine(URL(**settings.DATABASE))
+        self.engine = create_engine(URL(**database.settings.DATABASE))
         #self.readxml = Readxml('../xml/B1.xml')
         Session = sessionmaker(bind=self.engine)
         self.session = Session()    
@@ -30,11 +48,19 @@ class DAO:
         #tabelas history e instance será criadas depois da wed_state
         #History_entry.__table__.create(self.engine)
         #Interruption.__table__.create(self.engine)
-
         #wedState_wedTrigger
 
     def drop_tables(self):
-        Base.metadata.drop_all(self.engine)
+        Associations.wedState_wedTrigger.drop(self.engine)
+        Interruption.__table__.drop(self.engine)
+        History_entry.__table__.drop(self.engine)
+        WED_state.__table__.drop(self.engine)
+        Instance.__table__.drop(self.engine)
+        WED_trigger.__table__.drop(self.engine)
+        WED_flow.__table__.drop(self.engine)
+        WED_transition.__table__.drop(self.engine)
+        WED_condition.__table__.drop(self.engine)
+        WED_attribute.__table__.drop(self.engine)
 
     def insert(self):
         list_attributes = self.readxml.data_wed_attributes()
@@ -71,12 +97,13 @@ class DAO:
         WED_state.__table__.create(self.engine)
         History_entry.__table__.create(self.engine)
         Interruption.__table__.create(self.engine)
-        wedState_wedTrigger.create(self.engine)
+        Associations.wedState_wedTrigger.create(self.engine)
   
-    def select_condition(self, wed_condition):
-        result = self.session.execute(
-            "SELECT id FROM wed_condition WHERE name = '" + wed_condition + "'"
-        ).fetchone()
+    def select_condition(self, wed_condition = None):
+        if wed_condition == None:
+            result = self.session.query(WED_condition)
+        else:
+            result = self.session.query(WED_condition).filter_by(name = wed_condition)
         return result
 
     def select_transition(self, wed_transition):
@@ -89,13 +116,20 @@ class DAO:
         result = self.session.execute(
             "SELECT id FROM wed_flow WHERE name = '" + wed_flow + "'"
         ).fetchone()
-        return result        
-#dao = DAO()
-#b = Readxml('../xml/B1.xml')
-#dao.set_readxml(b)
-#dao.drop_tables
-#dao.insert()
-#print(dao.select_test('c_pedido_finalizado'))
-# listResult = dao.select_test()
-# for l in listResult:
-#     print(l[0])
+        return result     
+
+    def select_trigger(self):
+        return self.session.query(WED_trigger)
+
+    def select_fila(self, trigger_id):
+        return self.session.query(Associations.wedState_wedTrigger).filter_by\
+                (wed_trigger_id = trigger_id)
+
+    def select_state(self, state_id):
+        return self.session.query(WED_state).filter_by(id = state_id)
+
+    # def select_condition(self, condition_id):
+    #     return self.session.query(WED_condition).filter_by(id = condition_id)
+
+    def select_wedflow2(self, wedflow_id):
+        return self.session.query(WED_flow).filter_by(id=wedflow_id)

@@ -1,10 +1,10 @@
 from sqlalchemy import Integer, Column, create_engine, ForeignKey, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from Associations import *
-from WED_condition import *
-from Instance import *
-from WED_trigger import *
+from database.Associations import *
+from database.WED_condition import *
+from database.Instance import *
+from database.WED_trigger import *
 
 engine = None
 session = None

@@ -1,9 +1,7 @@
 from sqlalchemy import Integer, Column, create_engine, ForeignKey, String
 from sqlalchemy.orm import relationship, Session
 from sqlalchemy.ext.declarative import declarative_base
-from Associations import *
-from History_entry import *
-from WED_trigger import *
+from database.Associations import *
 
 engine = None
 session = None
