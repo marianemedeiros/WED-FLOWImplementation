@@ -77,8 +77,6 @@ class DAO:
                                 
         list_flows = self.readxml.data_wed_flows()
         for flows in list_flows:
-            print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-            print(flows.name)
             self.session.add(flows)
             self.session.commit()        
 
@@ -93,15 +91,11 @@ class DAO:
         Interruption.__table__.create(self.engine)
         Associations.wedState_wedTrigger.create(self.engine)
   
-    def select_condition(self, wed_condition):
-        print("sjasiofoĺsdjflasjflasjdflasjklfjsadlfjsldfjdskljfdsljfdsljfas")
-        result = self.session.query(WED_condition).filter_by(name = wed_condition)
-        # dao.session.query(WED_condition).filter_by(name = "c_novo_pedido")
-        # result = self.session.execute(
-        #     "SELECT id FROM wed_condition WHERE name = '" + wed_condition + "'"
-        # ).fetchone()
-        print("AAAAAAAAAAAAAAAAAAAAAASDDSADSADASAS")
-        len(result)
+    def select_condition(self, wed_condition = None):
+        if wed_condition == None:
+            result = self.session.query(WED_condition)
+        else:
+            result = self.session.query(WED_condition).filter_by(name = wed_condition)
         return result
 
     def select_transition(self, wed_transition):
@@ -126,8 +120,8 @@ class DAO:
     def select_state(self, state_id):
         return self.session.query(WED_state).filter_by(id = state_id)
 
-    def select_condition(self, condition_id):
-        return self.session.query(WED_condition).filter_by(id = condition_id)
+    # def select_condition(self, condition_id):
+    #     return self.session.query(WED_condition).filter_by(id = condition_id)
 
     def select_wedflow2(self, wedflow_id):
         return self.session.query(WED_flow).filter_by(id=wedflow_id)
