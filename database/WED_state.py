@@ -19,4 +19,6 @@ class WED_state(Base):
     instance_id = Column(Integer, ForeignKey('instance.id'))
     instance = relationship("Instance", back_populates="wed_state")
     wed_trigger = relationship("WED_trigger", secondary=wedState_wedTrigger, back_populates="wed_state")
-    history_entry = relationship("History_entry", uselist=True, back_populates="wed_state")
+    # history_entry_initial = relationship("History_entry")
+    # history_entry_current = relationship("History_entry")
+    # history_entry_final = relationship("History_entry", uselist=False, back_populates="wed_state")

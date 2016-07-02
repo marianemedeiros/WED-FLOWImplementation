@@ -17,15 +17,17 @@ class History_entry(Base):
     instance_id = Column(Integer, ForeignKey('instance.id'))
     instance = relationship("Instance", back_populates="history_entry")
 
-    initial_state_id =Column(Integer, ForeignKey('wed_state.id'))
-    final_state_id =Column(Integer, ForeignKey('wed_state.id'))
+    initial_state_id = Column(Integer, ForeignKey('wed_state.id'))
     current_state_id = Column(Integer, ForeignKey('wed_state.id'))
-    
-    
-    initial_state = relationship("WED_state", foreign_keys=[initial_state_id], backref='initial_state')
-    current_state = relationship("WED_state",foreign_keys=[current_state_id], backref='current_state')
-    final_state = relationship("WED_state", foreign_keys=[final_state_id], backref='final_state')
-    
+
+    initial_state = relationship("WED_state", foreign_keys = [initial_state_id])
+    current_state = relationship("WED_state", foreign_keys = [current_state_id])
+
+
+    final_state_id = Column(Integer, ForeignKey('wed_state.id'))
+    final_state = relationship("WED_state", foreign_keys = [final_state_id])
+
+  
     interruption = relationship("Interruption", uselist=False, back_populates="history_entry")
     wed_transition_id = Column(Integer, ForeignKey('wed_transition.id'))
     wed_transition = relationship("WED_transition", back_populates="history_entry")

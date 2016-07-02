@@ -77,6 +77,8 @@ class DAO:
                                 
         list_flows = self.readxml.data_wed_flows()
         for flows in list_flows:
+            print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+            print(flows.name)
             self.session.add(flows)
             self.session.commit()        
 
