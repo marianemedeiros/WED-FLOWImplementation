@@ -52,7 +52,19 @@ class DAO:
         #wedState_wedTrigger
 
     def drop_tables(self):
-        Base.metadata.drop_all(self.engine)
+
+        # WED_attribute.__table__.drop(self.engine)
+        # WED_condition.__table__.drop(self.engine)
+        # WED_transition.__table__.drop(self.engine)
+        # WED_flow.__table__.drop(self.engine)
+        # WED_trigger.__table__.drop(self.engine)
+        # Instance.__table__.drop(self.engine)
+        # History_entry.__table__.drop(self.engine)
+
+
+        # for tbl in reversed(meta.sorted_tables):
+        #     engine.execute(tbl.delete())
+        metadata.drop_all(self.engine)
 
     def insert(self):
         list_attributes = self.readxml.data_wed_attributes()
