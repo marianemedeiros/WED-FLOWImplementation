@@ -60,6 +60,11 @@ def make_func(trigger, dao):
 
             # update para processado (finish)
         print('trigger_'+str(trigger.id) + ': Funcionou')
+
+        for i in fila_wedStates_wedTriggers:
+            i.status = "finish"
+        dao.session.commit()
+
     return _function
 
 
