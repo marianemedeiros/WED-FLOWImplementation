@@ -11,11 +11,6 @@ import time
     # atualiza o history_entry (monitor passa a linha do history)
     # Inserir o novo estado nas filas
 
-
-
-
-
-
 def avalia_trigger(condition, state, dao):
     print("aaaaaa")
     print(dao.select_condition(condition.id))
