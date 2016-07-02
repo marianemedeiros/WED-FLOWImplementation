@@ -21,7 +21,7 @@ def make_func(trigger, dao):
         Para cada wed_state da fila avalia a condition da trigger
         se true: dispara a transition
         '''
-        fila_wedStates_wedTriggers = dao.select_fila(trigger.id).filter_by(status = "started")
+        fila_wedStates_wedTriggers = dao.select_fila(trigger.id)
         
         # update status para processando (feito)
         for i in fila_wedStates_wedTriggers:
