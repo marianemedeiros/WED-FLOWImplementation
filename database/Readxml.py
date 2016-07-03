@@ -1,11 +1,15 @@
 import sys
 import xmltodict
-from WED_condition import *
-from WED_flow import *
-from WED_state import *
-from WED_transition import *
-from WED_trigger import *
-from WED_attribute import *
+
+import database.Associations
+from database.Interruption import Interruption
+from database.History_entry import History_entry
+from database.Instance import Instance
+from database.WED_attribute import WED_attribute
+from database.WED_condition import WED_condition
+from database.WED_flow import WED_flow 
+from database.WED_transition import WED_transition
+from database.WED_trigger import WED_trigger
 
 class Readxml:
 
@@ -13,6 +17,7 @@ class Readxml:
         xml_file = open(path_file_xml)
         self.dict_xml = xmltodict.parse(xml_file.read())
         self.dao = None
+        self.initial_state = dict()
 
     def alter_table_state(self, attributes):
         data = ''
@@ -29,14 +34,16 @@ class Readxml:
 
         #print(data)
 
-        state_file = open('WED_state.py', 'r')
+        state_file = open('database/WED_state.py', 'r')
         data_file = state_file.read()
         #favor não retirar o tab da string abaixo
         new_data = data_file.replace('    attribute = Column(String(50))', data)
         state_file.close()
 
-        state_file = open('WED_state.py', 'w')
+        state_file = open('database/WED_state.py', 'w')
         state_file.write(new_data)
+
+
         state_file.close()
 
     def data_wed_attributes(self):
@@ -46,12 +53,17 @@ class Readxml:
         for data_attributes in d:
             name = data_attributes['@Name']
             type_ = data_attributes['@Type']
+            if(len(data_attributes) > 2):
+                inicial_id = data_attributes['@inicial_id']
+                inicial_value = data_attributes['@inicial_value']
+                self.initial_state[inicial_id] = inicial_value
 
+            #self.initial_state = []
             wed_attributes = WED_attribute(name=name, type_=type_)
             list_obj_attr.append(wed_attributes);
 
         Readxml.alter_table_state(self,list_obj_attr)
-        return list_obj_attr
+        return list_obj_attr, self.initial_state
 
     def set_dao(self, dao):
         self.dao = dao
@@ -102,7 +114,7 @@ class Readxml:
 
             #print(name)
             #print(attributes)
-            Readxml.generate_class(name, attributes)
+            # Readxml.generate_class(name, attributes)
 
             wed_transition = WED_transition(name=name)
             list_obj_transition.append(wed_transition)
@@ -116,11 +128,17 @@ class Readxml:
             name = d['Flow']['@Name']
             wed_condition = d['Flow']['@FinalStateCondName']
             result = self.dao.select_condition(wed_condition)
-            final_condition  = result[0]
+            final_condition  = result[0].id
             wed_flow = WED_flow(name = name, final_condition =final_condition)
             list_obj_flow.append(wed_flow)
         return list_obj_flow
 
+# transition
+    # bloqueia o estado atual na instancia. bloqueia na tabela de wed_state o instance_id2
+    # cria um novo estado
+    # atualiza estado atual no Instance e libera o bloqueio
+    # atualiza o history_entry (monitor passa a linha do history)
+    # Inserir o novo estado nas filas
     def generate_class(name, attributes):
         strAtt = ''
         for att in attributes:
@@ -145,14 +163,15 @@ class Readxml:
         list_obj_trigger = list()
         for data_flows in d:
             result_flow = self.dao.select_flow(d['Flow']['@Name'])
-            flow_id = result_flow[0]
+            flow_id = result_flow[0].id
             triggers = d['Flow']['Trigger']
             for tgg in triggers:
                 result_cond_id = self.dao.select_condition(tgg['@CondName'])
-                cond_id = result_cond_id[0]
+                cond_id = result_cond_id[0].id
                 result_trans_id = self.dao.select_transition(tgg['@TransName'])
-                trans_id = result_trans_id[0]
+                trans_id = result_trans_id[0].id
                 period  = tgg['@Period']
+                period = int(period[0])
                 wed_trigger = WED_trigger( wed_condition_id = cond_id, wed_transition_id = trans_id, wed_flow_id = flow_id, active ='TRUE' , period = period)
                 list_obj_trigger.append(wed_trigger)
         return list_obj_trigger

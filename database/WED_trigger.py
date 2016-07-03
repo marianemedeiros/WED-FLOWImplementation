@@ -1,14 +1,7 @@
 from sqlalchemy import Integer, Column, create_engine, ForeignKey, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
-from Associations import *
-from WED_flow import *
-from WED_state import *
-from WED_transition import *
-from WED_condition import *
-
-engine = None
-session = None
+from database.Associations import *
 
 ''' verificar se o tipo period eh mesmo string '''
 class WED_trigger(Base):
@@ -22,4 +15,4 @@ class WED_trigger(Base):
     wed_flow_id = Column(Integer, ForeignKey('wed_flow.id'))
     wed_flow = relationship("WED_flow", back_populates="wed_trigger")    
     active = Column(String(50))
-    period = Column(String(50))
+    period = Column(Integer)
