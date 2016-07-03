@@ -1,3 +1,4 @@
+import datetime
 from sqlalchemy.engine.url import URL
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -45,7 +46,7 @@ class DAO:
         WED_flow.__table__.create(self.engine)
         WED_trigger.__table__.create(self.engine)
         Instance.__table__.create(self.engine)
-        #tabelas history e instance será criadas depois da wed_state
+        #tabelas history e instance serao criadas depois da wed_state
         #History_entry.__table__.create(self.engine)
         #Interruption.__table__.create(self.engine)
         #wedState_wedTrigger
@@ -71,7 +72,7 @@ class DAO:
         # depois de ler os wed_attributes cria a tabela wed_state, como History tem relacionamento com
         # wed-state, entao cria ele depois do wed_state e Interruption tem relacionamento com
         # History entao cria tbn.
-        DAO.create_necessary_tables(self,list_attributes[1])
+        DAO.create_necessary_tables(self)
         
         list_conditions = self.readxml.data_wed_conditions()
         for condition in list_conditions:
@@ -93,18 +94,26 @@ class DAO:
             self.session.add(trigger)
             self.session.commit()    
 
-    def create_necessary_tables(self,initial_states):
+        #1 criar um instance
+        #2 cria state
+        wed_flow = DAO.select_flow(self)
+        instance = Instance(status="started", create_at=datetime.datetime.now(), wed_flow_id=wed_flow[0].id)
+        self.session.add(instance)
+        self.session.commit()
+
+        #TODO o certo certo messsmo é nesta parte fazer de acordo com o wed_attribute, ou seja,
+        #ler o wed_attribute colocar na lista o nome , o id e o valor.
+        initial_state = WED_state(id_cliente=1, cliente=list_attributes[1]["1"], id_produto=2, produto=list_attributes[1]["2"], instance_id=instance.id, instance_id2=instance.id)
+        self.session.add(initial_state)
+        self.session.commit()
+
+
+    def create_necessary_tables(self):
         WED_state.__table__.create(self.engine)
         History_entry.__table__.create(self.engine)
         Interruption.__table__.create(self.engine)
         Associations.wedState_wedTrigger.create(self.engine)
 
-        #1 criar um instance
-        #2 cria state
-        wed_flow = select_flow()
-        instance = Instance(status="started", create_at=, wed_flow_id=wed_flow.id)
-
-  
     def select_condition(self, wed_condition = None):
         if wed_condition == None:
             result = self.session.query(WED_condition).all()
