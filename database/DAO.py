@@ -97,9 +97,7 @@ class DAO:
         #1 criar um instance
         #2 cria state
         wed_flow = DAO.select_flow(self)
-        instance = Instance(status="started", create_at=datetime.datetime.now(), wed_flow_id=wed_flow[0].id)
-        self.session.add(instance)
-        self.session.commit()
+        instance = DAO.create_instance(self,"started",wed_flow[0].id)
 
         #TODO o certo certo messsmo é nesta parte fazer de acordo com o wed_attribute, ou seja,
         #ler o wed_attribute colocar na lista o nome , o id e o valor.
@@ -107,6 +105,15 @@ class DAO:
         self.session.add(initial_state)
         self.session.commit()
 
+    def create_instance(self,status_,wed_flow_id,finalized_at=None):
+    	if(finalized_at == None):
+    		instance = Instance(status=status_, create_at=datetime.datetime.now(), wed_flow_id=wed_flow_id)
+    		self.session.add(instance)
+    	else:
+    		instance = Instance(status=status_, create_at=datetime.datetime.now(), finalized_at=finalized_at,wed_flow_id=wed_flow.id)
+    		self.session.add(instance)
+    	self.session.commit()
+    	return instance
 
     def create_necessary_tables(self):
         WED_state.__table__.create(self.engine)
