@@ -36,7 +36,7 @@ class Readxml:
 
         state_file = open('database/WED_state.py', 'r')
         data_file = state_file.read()
-        #favor não retirar o tab da string abaixo
+        #favor nao retirar o tab da string abaixo
         new_data = data_file.replace('    attribute = Column(String(50))', data)
         state_file.close()
 
@@ -75,6 +75,7 @@ class Readxml:
         for data_conditions in d:
             name = data_conditions['@Name']          
             predicates = data_conditions['Predicate']
+
             if isinstance(predicates, list):
                 pred = ''
                 for text in predicates:
