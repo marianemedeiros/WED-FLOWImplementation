@@ -8,4 +8,7 @@ dao.set_readxml(readxml)
 
 dao.drop_tables()
 dao.create_tables()
+#insere estado inicial no wed_state
+
+
 dao.insert()

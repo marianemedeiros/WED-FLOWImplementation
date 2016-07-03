@@ -64,14 +64,14 @@ class DAO:
 
     def insert(self):
         list_attributes = self.readxml.data_wed_attributes()
-        for attributes in list_attributes:
+        for attributes in list_attributes[0]:
             self.session.add(attributes)
             self.session.commit()
 
         # depois de ler os wed_attributes cria a tabela wed_state, como History tem relacionamento com
         # wed-state, entao cria ele depois do wed_state e Interruption tem relacionamento com
         # History entao cria tbn.
-        DAO.create_necessary_tables(self)
+        DAO.create_necessary_tables(self,list_attributes[1])
         
         list_conditions = self.readxml.data_wed_conditions()
         for condition in list_conditions:
@@ -93,11 +93,17 @@ class DAO:
             self.session.add(trigger)
             self.session.commit()    
 
-    def create_necessary_tables(self):
+    def create_necessary_tables(self,initial_states):
         WED_state.__table__.create(self.engine)
         History_entry.__table__.create(self.engine)
         Interruption.__table__.create(self.engine)
         Associations.wedState_wedTrigger.create(self.engine)
+
+        #1 criar um instance
+        #2 cria state
+        wed_flow = select_flow()
+        instance = Instance(status="started", create_at=, wed_flow_id=wed_flow.id)
+
   
     def select_condition(self, wed_condition = None):
         if wed_condition == None:
