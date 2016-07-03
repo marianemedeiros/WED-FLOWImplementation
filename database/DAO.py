@@ -135,3 +135,6 @@ class DAO:
 
     def select_wedflow2(self, wedflow_id):
         return self.session.query(WED_flow).filter_by(id=wedflow_id).all()
+
+    def select_instance(self, instance_id):
+        return self.session.query(Instance).filter_by(id = instance_id).all()

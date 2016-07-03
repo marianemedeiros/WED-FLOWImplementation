@@ -1,7 +1,9 @@
 from database import *
 import schedule
 from datetime import datetime
+from transition import *
 import time
+from threading import Thread
 
 
 # transition
@@ -54,11 +56,25 @@ def make_func(trigger, dao):
         for i in fila_wedStates_wedTriggers:
             result = avalia_trigger(trigger.wed_condition, dao.select_state(i.wed_state_id), dao)
             if(result == True):
-                history_entry = History_entry()
                 # Criar a entrada no history_entry
+                instance_id = dao.select_instance(dao.select_state(i.wed_state_id)[0])[0].id
+                history_entry = History_entry(create_at = datetime.now(), instance_id = instance_id, \
+                    initial_state_id = i.wed_state_id, wed_transition_id = i.wed_transition_id) # FALTA O INTERRUPTION
+                history_entry.add()
+                dao.session.commit()
+                
+                transition = dao.select_transition(i.wed_transition_id)
+
+                package = __import__("transitions")
+                module = getattr(package, transition.name)
+                class_ = getattr(module, transition.name)
+                Thread(target=class_.run, args=(dao,history_entry,))
+
+
                 # dispara transition (a transition atualiza o history_entry)
 
-            # update para processado (finish)
+        
+        # update para processado (finish)
         print('trigger_'+str(trigger.id) + ': Funcionou')
 
         for i in fila_wedStates_wedTriggers:
