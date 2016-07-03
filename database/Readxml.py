@@ -17,6 +17,7 @@ class Readxml:
         xml_file = open(path_file_xml)
         self.dict_xml = xmltodict.parse(xml_file.read())
         self.dao = None
+        self.initial_state = dict()
 
     def alter_table_state(self, attributes):
         data = ''
@@ -41,6 +42,8 @@ class Readxml:
 
         state_file = open('database/WED_state.py', 'w')
         state_file.write(new_data)
+
+
         state_file.close()
 
     def data_wed_attributes(self):
@@ -50,12 +53,17 @@ class Readxml:
         for data_attributes in d:
             name = data_attributes['@Name']
             type_ = data_attributes['@Type']
+            if(len(data_attributes) > 2):
+                inicial_id = data_attributes['@inicial_id']
+                inicial_value = data_attributes['@inicial_value']
+                self.initial_state[inicial_id] = inicial_value
 
+            #self.initial_state = []
             wed_attributes = WED_attribute(name=name, type_=type_)
             list_obj_attr.append(wed_attributes);
 
         Readxml.alter_table_state(self,list_obj_attr)
-        return list_obj_attr
+        return list_obj_attr, self.initial_state
 
     def set_dao(self, dao):
         self.dao = dao
@@ -125,6 +133,12 @@ class Readxml:
             list_obj_flow.append(wed_flow)
         return list_obj_flow
 
+# transition
+    # bloqueia o estado atual na instancia. bloqueia na tabela de wed_state o instance_id2
+    # cria um novo estado
+    # atualiza estado atual no Instance e libera o bloqueio
+    # atualiza o history_entry (monitor passa a linha do history)
+    # Inserir o novo estado nas filas
     def generate_class(name, attributes):
         strAtt = ''
         for att in attributes:
