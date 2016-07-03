@@ -131,7 +131,7 @@ class DAO:
 
     def select_fila(self, trigger_id):
         return self.session.query(Associations.wedState_wedTrigger).filter_by\
-                (wed_trigger_id = trigger_id).all()
+                (wed_trigger_id = trigger_id, status = "started").all()
 
     def select_state(self, state_id):
         return self.session.query(WED_state).filter_by(id = state_id).all()
@@ -141,3 +141,6 @@ class DAO:
 
     def select_wedflow2(self, wedflow_id):
         return self.session.query(WED_flow).filter_by(id=wedflow_id).all()
+
+    def select_instance(self, instance_id):
+        return self.session.query(Instance).filter_by(id = instance_id).all()
