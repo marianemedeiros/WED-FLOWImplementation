@@ -94,6 +94,7 @@ class DAO:
             self.session.add(trigger)
             self.session.commit()    
 
+    def insert_wed_state(self,list_attributes):
         #1 criar um instance
         #2 cria state
         wed_flow = DAO.select_flow(self)
