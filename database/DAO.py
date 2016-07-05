@@ -7,9 +7,7 @@ import database.settings
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
-from database import Associations
-# import database.Associations
-#from database.Associations import wedState_wedTrigger
+from database.Associations import wedState_wedTrigger
 from database.Interruption import Interruption
 from database.History_entry import History_entry
 from database.Instance import Instance
@@ -53,8 +51,7 @@ class DAO:
         #wedState_wedTrigger
 
     def drop_tables(self):
-        Associations.wedState_wedTrigger.drop(self.engine)
-        #wedState_wedTrigger.__table__.drop(self.engine)
+        wedState_wedTrigger.__table__.drop(self.engine)
         Interruption.__table__.drop(self.engine)
         History_entry.__table__.drop(self.engine)
         WED_state.__table__.drop(self.engine)
@@ -106,29 +103,30 @@ class DAO:
 
         #TODO o certo certo messsmo é nesta parte fazer de acordo com o wed_attribute, ou seja,
         #ler o wed_attribute colocar na lista o nome , o id e o valor.
-        initial_state = WED_state(id_cliente=1, cliente=list_attributes[1]["1"], id_produto=2, produto=list_attributes[1]["2"], instance_id=instance.id)
+        initial_state = WED_state(id_cliente=1, cliente=list_attributes[1]["1"], id_pedido=2, pedido=list_attributes[1]["2"], instance_id=instance.id)
         self.session.add(initial_state)
         self.session.commit()
+
+        self.coloca_na_fila(initial_state)
+
         instance.state_id = initial_state.id;
         self.session.commit()
 
     def create_instance(self,status_,wed_flow_id,finalized_at=None):
-    	if(finalized_at == None):
-    		instance = Instance(status=status_, create_at=datetime.datetime.now(), wed_flow_id=wed_flow_id)
-    		self.session.add(instance)
-    	else:
-    		instance = Instance(status=status_, create_at=datetime.datetime.now(), finalized_at=finalized_at,wed_flow_id=wed_flow.id)
-    		self.session.add(instance)
-    	self.session.commit()
-    	return instance
+        if(finalized_at == None):
+            instance = Instance(status=status_, create_at=datetime.datetime.now(), wed_flow_id=wed_flow_id)
+            self.session.add(instance)
+        else:
+            instance = Instance(status=status_, create_at=datetime.datetime.now(), finalized_at=finalized_at,wed_flow_id=wed_flow.id)
+            self.session.add(instance)
+        self.session.commit()
+        return instance
 
     def create_necessary_tables(self):
         WED_state.__table__.create(self.engine)
         History_entry.__table__.create(self.engine)
         Interruption.__table__.create(self.engine)
-        Associations.wedState_wedTrigger.create(self.engine)
-        #wedState_wedTrigger.__table__.create(self.engine)
-        #x = wedState_wedTrigger(status='teste',wed_trigger_id=1,wed_state_id=1)
+        wedState_wedTrigger.__table__.create(self.engine)
 
     def select_condition(self, wed_condition = None):
         if wed_condition == None:
@@ -154,8 +152,11 @@ class DAO:
     def select_trigger(self):
         return self.session.query(WED_trigger).all()
 
+    def select_trigger_id(self, trigger_id):
+        return self.session.query(WED_trigger).filter_by(id = trigger_id).all()
+
     def select_fila(self, trigger_id):
-        return self.session.query(Associations.wedState_wedTrigger).filter_by\
+        return self.session.query(wedState_wedTrigger).with_for_update().filter_by\
                 (wed_trigger_id = trigger_id, status = "started").all()
 
     def select_state(self, state_id):
@@ -169,3 +170,8 @@ class DAO:
 
     def select_instance(self, instance_id):
         return self.session.query(Instance).filter_by(id = instance_id).all()
+
+    def coloca_na_fila(self,wedState):
+        wed_trigger = self.select_trigger()
+        for i in wed_trigger:
+            wedState_wedTrigger(wed_state=wedState, status='started', wed_trigger=i)
