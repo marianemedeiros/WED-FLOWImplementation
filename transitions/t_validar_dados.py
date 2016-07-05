@@ -5,15 +5,6 @@
     # atualiza o history_entry (monitor passa a linha do history)
     # Inserir o novo estado nas filas
 
-    # '''
-    #     wed_flow = DAO.select_flow(self)
-    #     instance = DAO.create_instance(self,"started",wed_flow[0].id)
-
-    #     #TODO o certo certo messsmo é nesta parte fazer de acordo com o wed_attribute, ou seja,
-    #     #ler o wed_attribute colocar na lista o nome , o id e o valor.
-    #     initial_state = WED_state(id_cliente=1, cliente=list_attributes[1]["1"], id_produto=2, produto=list_attributes[1]["2"], instance_id=instance.id, instance_id2=instance.id)
-
-    # '''
 class t_validar_dados():
     def run(dao, instance, history_entry):
         wed_flow_id = dao.session.query(WED_flow).all()[0].id
@@ -23,7 +14,7 @@ class t_validar_dados():
 
         dao.session.add(state)
         dao.session.commit()
-        instance.state_id = state.id
+        instance.state = state
         dao.session.commit()
         # DESBLOQUEIA o state_atual
 

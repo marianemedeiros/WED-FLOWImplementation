@@ -61,8 +61,6 @@ def make_func(trigger, dao):
         
         print('trigger_'+str(trigger.id) + ': Funcionou')
 
-        
-
     return _function
 
 
