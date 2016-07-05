@@ -9,7 +9,7 @@ class WED_trigger(Base):
     id = Column(Integer, primary_key = True)
     wed_condition_id = Column(Integer, ForeignKey('wed_condition.id'))
     wed_condition = relationship("WED_condition", back_populates="wed_trigger")
-    wed_state = relationship("WED_state", secondary=wedState_wedTrigger, back_populates="wed_trigger")
+    wed_state = relationship("WED_state", secondary='wedState_wedTrigger', back_populates="wed_trigger")
     wed_transition_id = Column(Integer, ForeignKey('wed_transition.id'))
     wed_transition = relationship("WED_transition", back_populates="wed_trigger")    
     wed_flow_id = Column(Integer, ForeignKey('wed_flow.id'))
