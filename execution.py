@@ -90,11 +90,11 @@ def make_func(trigger, dao):
 if __name__ == '__main__':
     dao = DAO()
         
-    # wedflow = dao.select_wedflow2(1)
-    # ins = Instance(status = 'started', create_at = datetime.now(), wed_flow_id = wedflow[0])
-    # dao.session.add(ins)
-    # dao.session.commit()
-
+    wedflow = dao.select_wedflow2(1)
+    
+    ins = Instance(status = 'started', create_at = datetime.now(), wed_flow_id = wedflow[0])
+    dao.session.add(ins)
+    dao.session.commit()
     result = dao.select_trigger()
     for i in result:
         job = make_func(i, dao)
