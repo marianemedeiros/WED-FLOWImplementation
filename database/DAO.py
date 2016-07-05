@@ -103,9 +103,12 @@ class DAO:
 
         #TODO o certo certo messsmo é nesta parte fazer de acordo com o wed_attribute, ou seja,
         #ler o wed_attribute colocar na lista o nome , o id e o valor.
-        initial_state = WED_state(id_cliente=1, cliente=list_attributes[1]["1"], id_produto=2, produto=list_attributes[1]["2"], instance_id=instance.id)
+        initial_state = WED_state(id_cliente=1, cliente=list_attributes[1]["1"], id_pedido=2, pedido=list_attributes[1]["2"], instance_id=instance.id)
         self.session.add(initial_state)
         self.session.commit()
+
+        self.coloca_na_fila(initial_state)
+
         instance.state_id = initial_state.id;
         self.session.commit()
 
@@ -149,6 +152,9 @@ class DAO:
     def select_trigger(self):
         return self.session.query(WED_trigger).all()
 
+    def select_trigger_id(self, trigger_id):
+        return self.session.query(WED_trigger).filter_by(id = trigger_id).all()
+
     def select_fila(self, trigger_id):
         return self.session.query(wedState_wedTrigger).with_for_update().filter_by\
                 (wed_trigger_id = trigger_id, status = "started").all()
@@ -164,3 +170,8 @@ class DAO:
 
     def select_instance(self, instance_id):
         return self.session.query(Instance).filter_by(id = instance_id).all()
+
+    def coloca_na_fila(self,wedState):
+        wed_trigger = self.select_trigger()
+        for i in wed_trigger:
+            wedState_wedTrigger(wed_state=wedState, status='started', wed_trigger=i)
