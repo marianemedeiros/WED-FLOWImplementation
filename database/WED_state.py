@@ -20,8 +20,8 @@ class WED_state(Base):
     instance_id = Column(Integer, ForeignKey('instance.id'))
     instance = relationship("Instance", foreign_keys=[instance_id])
 
-    instance_id2 = Column(Integer, ForeignKey('instance.id'))
-    instance2 = relationship("Instance", foreign_keys=[instance_id2])
+    #instance_id2 = Column(Integer, ForeignKey('instance.id'))
+    #instance2 = relationship("Instance", foreign_keys=[instance_id2])
 
-    wed_trigger = relationship("WED_trigger", secondary=wedState_wedTrigger, back_populates="wed_state")
+    wed_trigger = relationship("WED_trigger", secondary='wedState_wedTrigger', back_populates="wed_state")
     
