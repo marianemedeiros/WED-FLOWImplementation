@@ -78,11 +78,11 @@ class Readxml:
             if isinstance(predicates, list):
                 pred = ''
                 for text in predicates:
-                    pred = pred + "- " + text['#text'].replace(" = ",",").replace("\"","") + ",=" 
-                    #pred = pred + text['#text'] + ","
+                    #pred = pred + "- " + text['#text'].replace(" = ",",").replace("\"","") + ",=" 
+                    pred = pred + text['#text'] + ","
             else:
-                pred = "- " + predicates['#text'].replace(" = ",",").replace("\"","") + ",="
-                #pred = predicates['#text']
+                #pred = "- " + predicates['#text'].replace(" = ",",").replace("\"","") + ",="
+                pred = predicates['#text']
             
             expression = data_conditions['Expression']
 
