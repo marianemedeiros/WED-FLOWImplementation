@@ -14,6 +14,7 @@ class Instance(Base):
     __tablename__ = 'instance'
     id = Column(Integer, primary_key = True)
     status = Column(String(50))
+    state_id = Column(Integer)
     create_at = Column (DateTime)
     finalized_at =  Column (DateTime)
     wed_flow_id = Column(Integer, ForeignKey('wed_flow.id'))
