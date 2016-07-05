@@ -7,9 +7,7 @@ import database.settings
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
-from database import Associations
-# import database.Associations
-#from database.Associations import wedState_wedTrigger
+from database.Associations import wedState_wedTrigger
 from database.Interruption import Interruption
 from database.History_entry import History_entry
 from database.Instance import Instance
@@ -53,8 +51,7 @@ class DAO:
         #wedState_wedTrigger
 
     def drop_tables(self):
-        Associations.wedState_wedTrigger.drop(self.engine)
-        #wedState_wedTrigger.__table__.drop(self.engine)
+        wedState_wedTrigger.__table__.drop(self.engine)
         Interruption.__table__.drop(self.engine)
         History_entry.__table__.drop(self.engine)
         WED_state.__table__.drop(self.engine)
@@ -126,9 +123,7 @@ class DAO:
         WED_state.__table__.create(self.engine)
         History_entry.__table__.create(self.engine)
         Interruption.__table__.create(self.engine)
-        Associations.wedState_wedTrigger.create(self.engine)
-        #wedState_wedTrigger.__table__.create(self.engine)
-        #x = wedState_wedTrigger(status='teste',wed_trigger_id=1,wed_state_id=1)
+        wedState_wedTrigger.__table__.create(self.engine)
 
     def select_condition(self, wed_condition = None):
         if wed_condition == None:
@@ -155,7 +150,7 @@ class DAO:
         return self.session.query(WED_trigger).all()
 
     def select_fila(self, trigger_id):
-        return self.session.query(Associations.wedState_wedTrigger).filter_by\
+        return self.session.query(wedState_wedTrigger).with_for_update().filter_by\
                 (wed_trigger_id = trigger_id, status = "started").all()
 
     def select_state(self, state_id):

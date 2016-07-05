@@ -23,5 +23,5 @@ class WED_state(Base):
     #instance_id2 = Column(Integer, ForeignKey('instance.id'))
     #instance2 = relationship("Instance", foreign_keys=[instance_id2])
 
-    wed_trigger = relationship("WED_trigger", secondary='wedState_wedTrigger', back_populates="wed_state")
+    wed_trigger = relationship("wedState_wedTrigger", back_populates="wed_state")
     
