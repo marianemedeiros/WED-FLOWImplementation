@@ -1,7 +1,7 @@
 from database import *
 import schedule
 from datetime import datetime
-from transitions import *
+#from transitions import *
 import time
 from threading import Thread
 
@@ -14,7 +14,41 @@ from threading import Thread
     # Inserir o novo estado nas filas
 
 def avalia_trigger(condition, state, dao):
-    pass
+    
+    predicate = condition.predicates;
+
+    results = list()
+
+    list1 = predicate.split(',')
+
+    for p in list1:
+
+        list2 = p.split(' ')
+        attr1 = getattr(state, list2[0])
+
+        if attr1 == list2[2]:
+            results.append(True)
+        else:
+            results.append(False)
+
+
+    expressions = condition.expression
+
+    if len(results) == 1:
+        return results[0]
+    else:
+        listExpression = expressions.split(' ')
+        if listExpression[2] == "and" and results[0] == True and results[1] == True:
+            return True
+        elif listExpression[2] == "and":
+            return False
+        elif listExpression[2] == "or" and (results[0] == True or results[1] == True):
+            return True
+        else:
+            return False 
+
+    #lll.insert(0,True)
+    #del lll[0]
 
 def make_func(trigger, dao):
     def _function():
