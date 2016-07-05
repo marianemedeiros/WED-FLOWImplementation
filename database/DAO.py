@@ -155,7 +155,7 @@ class DAO:
         return self.session.query(WED_trigger).all()
 
     def select_fila(self, trigger_id):
-        return self.session.query(Associations.wedState_wedTrigger).filter_by\
+        return self.session.query(Associations.wedState_wedTrigger).with_for_update().filter_by\
                 (wed_trigger_id = trigger_id, status = "started").all()
 
     def select_state(self, state_id):
