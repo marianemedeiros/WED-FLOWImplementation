@@ -7,9 +7,10 @@
 
 class t_validar_dados():
     def run(dao, instance, history_entry):
+        print('Transaçãoooooooooo')
         wed_flow_id = dao.session.query(WED_flow).all()[0].id
         # BLOQUEIA O state_atual
-        state_atual = dao.session.query(WED_state).filter_by(id=instance.state_id)
+        state_atual = dao.session.query(WED_state).with_for_update().filter_by(id=instance.state_id)
         state = WED_state(cliente='validado', pontos=state_atual.pontos,pedido='validado', instance_id=instance.id, produto=state_atual.produto, pedido=state_atual.pedido, pagamento=state_atual.pagamento)
 
         dao.session.add(state)
