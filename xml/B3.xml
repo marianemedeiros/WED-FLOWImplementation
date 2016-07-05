@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WED-flow-initial-schema>
+	<WED-attributes>
+		<Attribute Name="id_cliente" Type="integer" inicial_id="1" inicial_value="invalido"/>
+		<Attribute Name="cliente" Type="string"/>
+		<Attribute Name="id_produto" Type="integer"/>
+		<Attribute Name="produto" Type="string"/>
+		<Attribute Name="id_pedido" Type="integer"/>
+		<Attribute Name="pedido" Type="string" inicial_id="2" inicial_value="recebido"/>
+	</WED-attributes>
+
+	<WED-conditions>
+		<Condition Name="c_novo_pedido" >
+			<Predicate Id="1"> cliente = "invalido" </Predicate>
+			<Predicate Id="2"> pedido = "recebido" </Predicate>
+			<Expression> 1 AND 2 </Expression>
+		</Condition>
+
+		<Condition Name="c_produto_enviado" >
+			<Predicate Id="1"> pedido = "enviado" </Predicate>
+			<Predicate Id="2"> produto = "enviado" </Predicate>
+			<Expression> 1 AND 2 </Expression>
+		</Condition>
+
+		<Condition Name="c_pedido_finalizado" >
+			<Predicate Id="1"> pedido = "concluido" </Predicate>
+			<Predicate Id="2"> pedido = "cancelado" </Predicate>
+			<Expression> 1 OR 2 </Expression>
+		</Condition>
+
+	</WED-conditions>
+
+	<WED-transitions>
+		<Transition Name="t_validar_dados" >
+			<UpdatedAttribute AttrName="cliente" />
+			<UpdatedAttribute AttrName="pedido" />
+		</Transition>
+
+		<Transition Name="t_emitir_notificacao_envio" >
+			<UpdatedAttribute AttrName="pedido" />
+		</Transition>
+
+	</WED-transitions>
+
+	<WED-flows>
+		<Flow Name="venda_livro" FinalStateCondName="c_pedido_finalizado">
+			<Trigger CondName="c_novo_pedido" TransName="t_validar_dados" Period="1s" />
+			<Trigger CondName="c_produto_enviado" TransName="t_emitir_notificacao_envio" Period="3s" />
+		</Flow>
+	</WED-flows>
+</WED-flow-initial-schema>
