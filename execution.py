@@ -75,7 +75,7 @@ if __name__ == '__main__':
     result = dao.select_trigger()
     for i in result:
         job = make_func(i, dao)
-        schedule.every(i.preriod).seconds.do(job)
+        schedule.every(i.period).seconds.do(job)
 
 
     while True:
