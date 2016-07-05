@@ -1,7 +1,6 @@
 from database import *
 import schedule
 from datetime import datetime
-from transitions import *
 import time
 from threading import Thread
 
