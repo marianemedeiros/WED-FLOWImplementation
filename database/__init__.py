@@ -1,5 +1,6 @@
 # import database.Interruption
-import database.Associations
+#import database.Associations
+#from database.Associations import wedState_wedTrigger
 from database.Interruption import Interruption
 from database.History_entry import History_entry
 from database.Instance import Instance
