@@ -30,4 +30,4 @@ class t_validar_dados():
         history_entry.completed_at = datetime.datetime.now()
         history_entry.current_state_id = state_atual.id
         history_entry.final_state_id = state.id
-        dao.session.commit()        
+        dao.session.commit()
