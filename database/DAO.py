@@ -3,6 +3,7 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database.Readxml import *
+from sqlalchemy.orm import scoped_session
 import database.settings
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
@@ -19,20 +20,24 @@ from database.WED_trigger import WED_trigger
 from database.Readxml import Readxml
 from database.WED_state import WED_state
 
+from database.db_session import *
 # from database.settings import *
 
 class DAO:
 
     def __init__(self):
-        self.engine = create_engine(URL(**database.settings.DATABASE))
-        #self.readxml = Readxml('../xml/B1.xml')
-        Session = sessionmaker(bind=self.engine)
+        # self.engine = create_engine(URL(**database.settings.DATABASE), echo=False)
+        # #self.readxml = Readxml('../xml/B1.xml')
+        self.engine = engine
+        # self.Session = scoped_session(sessionmaker(bind=self.engine))
         self.session = Session()    
         self.readxml = None
 
     def __del__(self):
-        self.session.close_all()
-        self.engine
+        # self.session.close_all()
+        # self.Session.remove()
+        # self.engine
+        pass
 
     def set_readxml(self, readxml):
         self.readxml = readxml
