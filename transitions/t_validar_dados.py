@@ -4,22 +4,56 @@
     # atualiza estado atual no Instance e libera o bloqueio
     # atualiza o history_entry (monitor passa a linha do history)
     # Inserir o novo estado nas filas
+# from database import *
+from database.Associations import wedState_wedTrigger
+from database.Interruption import Interruption
+from database.History_entry import History_entry
+from database.Instance import Instance
+from database.WED_attribute import WED_attribute
+from database.WED_condition import WED_condition
+from database.WED_flow import WED_flow 
+from database.WED_transition import WED_transition
+from database.WED_trigger import WED_trigger
+from database.Readxml import Readxml
+from database.WED_state import WED_state
+import datetime
+import copy
+
+
+from database.db_session import *
+
+
 
 class t_validar_dados():
-    def run(dao, instance, history_entry):
+    def run(instance_id, history_entry_id):
         print('Transaçãoooooooooo')
-        wed_flow_id = dao.session.query(WED_flow).all()[0].id
-        # BLOQUEIA O state_atual
-        state_atual = dao.session.query(WED_state).with_for_update().filter_by(id=instance.state_id)
-        state = WED_state(cliente='validado', pontos=state_atual.pontos,pedido='validado', instance_id=instance.id, produto=state_atual.produto, pedido=state_atual.pedido, pagamento=state_atual.pagamento)
+        session = Session()
+        instance = session.query(Instance).with_for_update().filter_by(id = instance_id).first()
+        
+        history_entry = session.query(History_entry).filter_by(id = history_entry_id).first()
+        state_atual = session.query(WED_state).with_for_update().filter_by(id = instance.state_id).first()
+        
+        state = WED_state(
+            id_cliente = state_atual.id_cliente,
+            cliente = 'validado',
+            pontos = state_atual.pontos,
+            id_pedido = state_atual.id_pedido,
+            pedido = 'validado',
+            id_produto = state_atual.id_produto,
+            produto=state_atual.produto,
+            pagamento=state_atual.pagamento,
+            instance_id = instance.id,
+            )
 
-        dao.session.add(state)
-        dao.session.commit()
+
+        session.add(state)
+        session.commit()
         instance.state = state
-        dao.session.commit()
+        session.commit()
         # DESBLOQUEIA o state_atual
 
         history_entry.completed_at = datetime.datetime.now()
         history_entry.current_state_id = state_atual.id
         history_entry.final_state_id = state.id
-        dao.session.commit()
+        session.commit()
+        session.close()
