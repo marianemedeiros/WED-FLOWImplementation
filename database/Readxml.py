@@ -17,53 +17,52 @@ class Readxml:
         xml_file = open(path_file_xml)
         self.dict_xml = xmltodict.parse(xml_file.read())
         self.dao = None
-        self.initial_state = dict()
+        
 
     def alter_table_state(self, attributes):
-        data = ''
-        for attr in attributes:
-            if attr == attributes[-1]:
-                if(attr.type_ == 'string'):
-                    data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + '(50))'
-                else:
-                    data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + ')'
-            elif(attr.type_ == 'string'):
-                data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + '(50))\n'
-            else:
-                data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + ')\n'
+        # data = ''
+        # for attr in attributes:
+        #     if attr == attributes[-1]:
+        #         if(attr.type_ == 'string'):
+        #             data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + '(50))'
+        #         else:
+        #             data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + ')'
+        #     elif(attr.type_ == 'string'):
+        #         data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + '(50))\n'
+        #     else:
+        #         data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + ')\n'
 
-        #print(data)
+        # #print(data)
 
-        state_file = open('database/WED_state.py', 'r')
-        data_file = state_file.read()
-        #favor nao retirar o tab da string abaixo
-        new_data = data_file.replace('    attribute = Column(String(50))', data)
-        state_file.close()
+        # state_file = open('database/WED_state.py', 'r')
+        # data_file = state_file.read()
+        # #favor nao retirar o tab da string abaixo
+        # new_data = data_file.replace('    attribute = Column(String(50))', data)
+        # state_file.close()
 
-        state_file = open('database/WED_state.py', 'w')
-        state_file.write(new_data)
+        # state_file = open('database/WED_state.py', 'w')
+        # state_file.write(new_data)
 
 
-        state_file.close()
+        # state_file.close()
+        pass
 
     def data_wed_attributes(self):
+        initial_state = dict()
         d = dict()
         d = self.dict_xml['WED-flow-initial-schema']['WED-attributes']['Attribute']
         list_obj_attr = list()
         for data_attributes in d:
             name = data_attributes['@Name']
             type_ = data_attributes['@Type']
-            if(len(data_attributes) > 2):
-                inicial_id = data_attributes['@inicial_id']
-                inicial_value = data_attributes['@inicial_value']
-                self.initial_state[inicial_id] = inicial_value
-
-            #self.initial_state = []
+            if('@inicial_value' in data_attributes):
+                initial_state[name] = data_attributes['@inicial_value']
+            
             wed_attributes = WED_attribute(name=name, type_=type_)
             list_obj_attr.append(wed_attributes);
 
         Readxml.alter_table_state(self,list_obj_attr)
-        return list_obj_attr, self.initial_state
+        return list_obj_attr, initial_state
 
     def set_dao(self, dao):
         self.dao = dao

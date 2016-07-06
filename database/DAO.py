@@ -3,6 +3,7 @@ from sqlalchemy.engine.url import URL
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database.Readxml import *
+from sqlalchemy.orm import scoped_session
 import database.settings
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
@@ -19,20 +20,24 @@ from database.WED_trigger import WED_trigger
 from database.Readxml import Readxml
 from database.WED_state import WED_state
 
+from database.db_session import *
 # from database.settings import *
 
 class DAO:
 
     def __init__(self):
-        self.engine = create_engine(URL(**database.settings.DATABASE))
-        #self.readxml = Readxml('../xml/B1.xml')
-        Session = sessionmaker(bind=self.engine)
+        # self.engine = create_engine(URL(**database.settings.DATABASE), echo=False)
+        # #self.readxml = Readxml('../xml/B1.xml')
+        self.engine = engine
+        # self.Session = scoped_session(sessionmaker(bind=self.engine))
         self.session = Session()    
         self.readxml = None
 
     def __del__(self):
-        self.session.close_all()
-        self.engine
+        # self.session.close_all()
+        # self.Session.remove()
+        # self.engine
+        pass
 
     def set_readxml(self, readxml):
         self.readxml = readxml
@@ -96,14 +101,15 @@ class DAO:
         #self.insert_wed_state(list_attributes)
 
     def insert_wed_state(self,list_attributes):
-        #1 criar um instance
-        #2 cria state
         wed_flow = DAO.select_flow(self)
         instance = DAO.create_instance(self,"started",wed_flow[0].id)
 
-        #TODO o certo certo messsmo é nesta parte fazer de acordo com o wed_attribute, ou seja,
-        #ler o wed_attribute colocar na lista o nome , o id e o valor.
-        initial_state = WED_state(id_cliente=1, cliente=list_attributes[1]["1"], id_pedido=2, pedido=list_attributes[1]["2"], instance_id=instance.id)
+        initial_state = WED_state()
+        
+        for d in list_attributes[1]:
+            setattr(initial_state,d,list_attributes[1][d])
+
+        initial_state.instance_id = instance.id
         self.session.add(initial_state)
         self.session.commit()
 

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WED-flow-initial-schema>
+	<WED-attributes>
+		<Attribute Name="id_cliente" Type="integer" inicial_value="1"/>
+		<Attribute Name="cliente" Type="string" inicial_value="invalido"/>
+		<Attribute Name="id_produto" Type="integer" />
+		<Attribute Name="produto" Type="string"/>
+		<Attribute Name="id_pedido" Type="integer" inicial_value="2"/>
+		<Attribute Name="pedido" Type="string" inicial_value="recebido"/>
+		<Attribute Name="pontos" Type="integer"/>
+		<Attribute Name="pagamento" Type="string"/>		
+	</WED-attributes>
+
+	<WED-conditions>
+		<Condition Name="c_novo_pedido" >
+			<Predicate Id="1"> cliente = "invalido" </Predicate>
+			<Predicate Id="2"> pedido = "recebido" </Predicate>
+			<Expression> 1 AND 2 </Expression>
+		</Condition>
+
+		<Condition Name="c_pedido_finalizado" >
+			<Predicate Id="2"> pedido = "concluido" </Predicate>
+			<Predicate Id="1"> pedido = "cancelado" </Predicate>
+			<Expression> 2 OR 1 </Expression>
+		</Condition>
+
+	</WED-conditions>
+
+	<WED-transitions>
+		<Transition Name="t_validar_dados" >
+			<UpdatedAttribute AttrName="cliente" />
+			<UpdatedAttribute AttrName="pedido" />
+		</Transition>
+
+		<Transition Name="t_reservar_produtos" >
+			<UpdatedAttribute AttrName="produto" />
+		</Transition>
+
+		<Transition Name="t_processar_pagamento" >
+			<UpdatedAttribute AttrName="pedido" />
+		</Transition>
+
+		<Transition Name="t_enviar_produtos" >
+			<UpdatedAttribute AttrName="pedido" />			
+			<UpdatedAttribute AttrName="produto" />
+		</Transition>
+
+		<Transition Name="t_emitir_notificacao_envio" >
+			<UpdatedAttribute AttrName="pedido" />
+		</Transition>
+
+		<Transition Name="t_atualiza_pfidelidade" >
+			<UpdatedAttribute AttrName="cliente" />
+			<UpdatedAttribute AttrName="pontos" />
+		</Transition>
+
+		<Transition Name="t_fechar_pedido" >
+			<UpdatedAttribute AttrName="pedido" />
+		</Transition>
+
+	</WED-transitions>
+
+	<WED-flows>
+		<Flow Name="venda_livro" FinalStateCondName="c_pedido_finalizado">
+			<Trigger CondName="c_novo_pedido" TransName="t_validar_dados" Period="1s" />
+			<Trigger CondName="c_novo_pedido" TransName="t_reservar_produtos" Period="1s" />	
+			<Trigger CondName="c_novo_pedido" TransName="t_processar_pagamento" Period="3s" />		
+			<Trigger CondName="c_novo_pedido" TransName="t_enviar_produtos" Period="3s" />									
+			<Trigger CondName="c_novo_pedido" TransName="t_emitir_notificacao_envio" Period="3s" />
+			<Trigger CondName="c_novo_pedido" TransName="t_atualiza_pfidelidade" Period="3s" />
+			<Trigger CondName="c_novo_pedido" TransName="t_fechar_pedido" Period="3s" />
+		</Flow>
+	</WED-flows>
+</WED-flow-initial-schema>

@@ -2,7 +2,7 @@ from database.DAO import *
 from database.Readxml import *
 
 dao = DAO()
-readxml = Readxml('xml/B3.xml')
+readxml = Readxml('xml/sequencial.xml')
 readxml.set_dao(dao)
 dao.set_readxml(readxml)
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <WED-flow-initial-schema>
 	<WED-attributes>
-		<Attribute Name="id_cliente" Type="integer" inicial_id="1" inicial_value="invalido"/>
-		<Attribute Name="cliente" Type="string"/>
-		<Attribute Name="id_produto" Type="integer"/>
+		<Attribute Name="id_cliente" Type="integer" inicial_value="1"/>
+		<Attribute Name="cliente" Type="string" inicial_value="invalido"/>
+		<Attribute Name="id_produto" Type="integer" />
 		<Attribute Name="produto" Type="string"/>
-		<Attribute Name="id_pedido" Type="integer"/>
-		<Attribute Name="pedido" Type="string" inicial_id="2" inicial_value="recebido"/>
+		<Attribute Name="id_pedido" Type="integer" inicial_value="2"/>
+		<Attribute Name="pedido" Type="string" inicial_value="recebido"/>
 	</WED-attributes>
 
 	<WED-conditions>
