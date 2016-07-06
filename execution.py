@@ -4,6 +4,7 @@ from datetime import datetime
 import copy
 import time
 import _thread
+import threading
 
 
 # transition
@@ -54,15 +55,17 @@ def avalia_trigger(condition, state, dao):
     #lll.insert(0,True)
     #del lll[0]
 
-def make_func(trigger, dao):
+def make_func(trigger):
     def _function():
         '''
             recuper a fila da trigger X
             Para cada wed_state da fila avalia a condition da trigger
             se true: dispara a transition
         '''
+        dao = DAO()
         fila_wedStates_wedTriggers = dao.select_fila(trigger.id)
-        
+        print("..............INICIO.................", trigger.id)
+
         # update status para processando (feito)
         for i in fila_wedStates_wedTriggers:
             i.status = "processing"
@@ -73,8 +76,12 @@ def make_func(trigger, dao):
             
             if(result == True):
                 # Criar a entrada no history_entry
-                instance = dao.select_instance(dao.select_state(i.wed_state_id)[0].id)[0]
-                instance
+                print(i.wed_state_id)
+                print(dao.select_state(i.wed_state_id)[0].id)
+                bla = dao.select_state(i.wed_state_id)[0]
+                print(bla)
+                instance = dao.select_instance(bla.instance_id)[0]
+                
                 
                 history_entry = History_entry(create_at = datetime.now(), instance_id = instance.id, \
                     initial_state_id = i.wed_state_id, wed_transition_id = i.wed_trigger.wed_transition_id) # FALTA O INTERRUPTION
@@ -104,9 +111,16 @@ def make_func(trigger, dao):
             i.status = "finish"
         dao.session.commit()
         
-        print('trigger_'+str(trigger.id) + ': Funcionou')
+        print("....................FIM.................", trigger.id)
+
 
     return _function
+
+
+
+def run_threaded(job_func):
+    job_thread = threading.Thread(target=job_func)
+    job_thread.start()
 
 
 if __name__ == '__main__':
@@ -114,8 +128,8 @@ if __name__ == '__main__':
 
     result = dao.select_trigger()
     for i in result:
-        job = make_func(i, dao)
-        schedule.every(i.period).seconds.do(job)
+        job = make_func(i)
+        schedule.every(i.period).seconds.do(run_threaded, job)
 
 
     while True:

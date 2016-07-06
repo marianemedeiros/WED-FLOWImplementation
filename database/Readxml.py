@@ -20,31 +20,32 @@ class Readxml:
         
 
     def alter_table_state(self, attributes):
-        data = ''
-        for attr in attributes:
-            if attr == attributes[-1]:
-                if(attr.type_ == 'string'):
-                    data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + '(50))'
-                else:
-                    data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + ')'
-            elif(attr.type_ == 'string'):
-                data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + '(50))\n'
-            else:
-                data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + ')\n'
+        # data = ''
+        # for attr in attributes:
+        #     if attr == attributes[-1]:
+        #         if(attr.type_ == 'string'):
+        #             data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + '(50))'
+        #         else:
+        #             data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + ')'
+        #     elif(attr.type_ == 'string'):
+        #         data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + '(50))\n'
+        #     else:
+        #         data = data + '    ' + attr.name + '= Column(' + attr.type_.title() + ')\n'
 
-        #print(data)
+        # #print(data)
 
-        state_file = open('database/WED_state.py', 'r')
-        data_file = state_file.read()
-        #favor nao retirar o tab da string abaixo
-        new_data = data_file.replace('    attribute = Column(String(50))', data)
-        state_file.close()
+        # state_file = open('database/WED_state.py', 'r')
+        # data_file = state_file.read()
+        # #favor nao retirar o tab da string abaixo
+        # new_data = data_file.replace('    attribute = Column(String(50))', data)
+        # state_file.close()
 
-        state_file = open('database/WED_state.py', 'w')
-        state_file.write(new_data)
+        # state_file = open('database/WED_state.py', 'w')
+        # state_file.write(new_data)
 
 
-        state_file.close()
+        # state_file.close()
+        pass
 
     def data_wed_attributes(self):
         initial_state = dict()

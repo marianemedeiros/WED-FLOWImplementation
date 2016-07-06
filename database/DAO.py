@@ -108,7 +108,8 @@ class DAO:
         
         for d in list_attributes[1]:
             setattr(initial_state,d,list_attributes[1][d])
-                            
+
+        initial_state.instance_id = instance.id
         self.session.add(initial_state)
         self.session.commit()
 
