@@ -17,7 +17,7 @@ class Readxml:
         xml_file = open(path_file_xml)
         self.dict_xml = xmltodict.parse(xml_file.read())
         self.dao = None
-        self.initial_state = dict()
+        
 
     def alter_table_state(self, attributes):
         data = ''
@@ -47,24 +47,21 @@ class Readxml:
         state_file.close()
 
     def data_wed_attributes(self):
+        initial_state = dict()
         d = dict()
         d = self.dict_xml['WED-flow-initial-schema']['WED-attributes']['Attribute']
         list_obj_attr = list()
         for data_attributes in d:
             name = data_attributes['@Name']
             type_ = data_attributes['@Type']
-            if(len(data_attributes) > 2):
-                inicial_id = data_attributes['@inicial_id']
-                inicial_value = data_attributes['@inicial_value']
-                self.initial_state[name] = [inicial_id]
-                self.initial_state[name].append(inicial_value)
-
-            #self.initial_state = []
+            if('@inicial_value' in data_attributes):
+                initial_state[name] = data_attributes['@inicial_value']
+            
             wed_attributes = WED_attribute(name=name, type_=type_)
             list_obj_attr.append(wed_attributes);
 
         Readxml.alter_table_state(self,list_obj_attr)
-        return list_obj_attr, self.initial_state
+        return list_obj_attr, initial_state
 
     def set_dao(self, dao):
         self.dao = dao
