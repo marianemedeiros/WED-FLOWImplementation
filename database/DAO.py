@@ -105,22 +105,10 @@ class DAO:
         instance = DAO.create_instance(self,"started",wed_flow[0].id)
 
         initial_state = WED_state()
-
+        
         for d in list_attributes[1]:
-            if d == 'pontos':
-                initial_state.pagamento = list_attributes[1][d][1]
-            if d == 'pagamamento':
-                initial_state.pagamento = list_attributes[1][d][1]
-            if d == 'id_cliente':
-                initial_state.id_cliente = list_attributes[1][d][0]
-                initial_state.cliente = list_attributes[1][d][1]
-            if d == 'id_produto':
-                initial_state.id_produto = list_attributes[1][d][0]
-                initial_state.produto = list_attributes[1][d][1]
-            if d == 'pedido':
-                initial_state.id_pedido = list_attributes[1][d][0]
-                initial_state.pedido = list_attributes[1][d][1]
-                
+            setattr(initial_state,d,list_attributes[1][d])
+                            
         self.session.add(initial_state)
         self.session.commit()
 
