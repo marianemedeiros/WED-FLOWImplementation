@@ -85,6 +85,7 @@ def make_func(trigger, dao):
                 print('name t: ' , transition.name)
                 # Carrega a classe da transition
                 package = __import__("transitions")
+                
                 module = getattr(package, transition.name)
                 class_ = getattr(module, transition.name)
 
