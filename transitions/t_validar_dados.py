@@ -26,7 +26,6 @@ from database.db_session import *
 
 class t_validar_dados():
     def run(instance_id, history_entry_id):
-        print('Transaçãoooooooooo')
         session = Session()
         instance = session.query(Instance).with_for_update().filter_by(id = instance_id).first()
         
@@ -35,10 +34,10 @@ class t_validar_dados():
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
-            cliente = 'enviado',
+            cliente = 'validado1',
             pontos = state_atual.pontos,
             id_pedido = state_atual.id_pedido,
-            pedido = 'enviado',
+            pedido = state_atual.pedido,
             id_produto = state_atual.id_produto,
             produto=state_atual.produto,
             pagamento=state_atual.pagamento,
@@ -62,5 +61,4 @@ class t_validar_dados():
         
         session.commit()
         session.close()
-        print("finish da transação")
 

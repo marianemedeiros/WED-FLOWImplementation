@@ -21,7 +21,7 @@ import copy
 
 
 from database.db_session import *
-class t_emitir_notificacao_envio():
+class t_atualiza_pfidelidade():
     def run(instance_id, history_entry_id):
         session = Session()
         instance = session.query(Instance).with_for_update().filter_by(id = instance_id).first()
@@ -31,10 +31,10 @@ class t_emitir_notificacao_envio():
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
-            cliente = 'validado4',
-            pontos = state_atual.pontos,
+            cliente = 'validado5',
+            pontos = 10,
             id_pedido = state_atual.id_pedido,
-            pedido = 'envio notificado',
+            pedido = state_atual.pedido,
             id_produto = state_atual.id_produto,
             produto= state_atual.produto,
             pagamento=state_atual.pagamento,

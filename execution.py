@@ -118,19 +118,17 @@ def make_func(trigger):
 
 
 
+
 def run_threaded(job_func):
     job_thread = threading.Thread(target=job_func)
     job_thread.start()
 
-
 if __name__ == '__main__':
     dao = DAO()
-
     result = dao.select_trigger()
     for i in result:
         job = make_func(i)
         schedule.every(i.period).seconds.do(run_threaded, job)
-
 
     while True:
         try:
@@ -141,4 +139,3 @@ if __name__ == '__main__':
             schedule.clear()
             print("\nBye")
             exit(0)
-
