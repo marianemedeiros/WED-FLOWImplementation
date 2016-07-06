@@ -1,7 +1,7 @@
 from database import *
 import schedule
 from datetime import datetime
-#from transitions import *
+import copy
 import time
 import _thread
 
@@ -74,6 +74,7 @@ def make_func(trigger, dao):
             if(result == True):
                 # Criar a entrada no history_entry
                 instance = dao.select_instance(dao.select_state(i.wed_state_id)[0].id)[0]
+                instance
                 
                 history_entry = History_entry(create_at = datetime.now(), instance_id = instance.id, \
                     initial_state_id = i.wed_state_id, wed_transition_id = i.wed_trigger.wed_transition_id) # FALTA O INTERRUPTION
@@ -92,7 +93,7 @@ def make_func(trigger, dao):
                 # cria e inicia a thread da transition
                 try:
                     print("aaa " , transition.name)
-                    _thread.start_new_thread(class_.run, (dao, instance, history_entry))
+                    _thread.start_new_thread(class_.run, (instance.id, history_entry.id))
                    # _thread.start_new_thread( print_time, ("Thread-2", 4, ) )
                 except:
                    print ("Error: unable to start thread")
@@ -108,19 +109,22 @@ def make_func(trigger, dao):
     return _function
 
 
-
-
-
 if __name__ == '__main__':
     dao = DAO()
 
     result = dao.select_trigger()
     for i in result:
-        job = make_func(i, dao)
+        job = make_func(i, DAO())
         schedule.every(i.period).seconds.do(job)
 
 
     while True:
-        schedule.run_pending()
-        time.sleep(1)
+        try:
+            schedule.run_pending()
+            time.sleep(1)
+
+        except KeyboardInterrupt:
+            schedule.clear()
+            print("\nBye")
+            exit(0)
 
