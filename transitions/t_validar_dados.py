@@ -25,7 +25,8 @@ from database.db_session import *
 
 
 class t_validar_dados():
-    def run(instance_id, history_entry_id):
+    def run(instance_id, history_entry_id, wed_condition):
+        print(wed_condition.id)
         print('Transaçãoooooooooo')
         session = Session()
         instance = session.query(Instance).with_for_update().filter_by(id = instance_id).first()
@@ -57,3 +58,4 @@ class t_validar_dados():
         history_entry.final_state_id = state.id
         session.commit()
         session.close()
+        print("finish da transação")

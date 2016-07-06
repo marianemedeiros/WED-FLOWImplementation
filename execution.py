@@ -93,7 +93,7 @@ def make_func(trigger, dao):
                 # cria e inicia a thread da transition
                 try:
                     print("aaa " , transition.name)
-                    _thread.start_new_thread(class_.run, (instance.id, history_entry.id))
+                    _thread.start_new_thread(class_.run, (instance.id, history_entry.id,trigger.wed_condition))
                    # _thread.start_new_thread( print_time, ("Thread-2", 4, ) )
                 except:
                    print ("Error: unable to start thread")
