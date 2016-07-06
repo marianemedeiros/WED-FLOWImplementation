@@ -25,8 +25,7 @@ from database.db_session import *
 
 
 class t_validar_dados():
-    def run(instance_id, history_entry_id, wed_condition):
-        print(wed_condition.id)
+    def run(instance_id, history_entry_id):
         print('Transaçãoooooooooo')
         session = Session()
         instance = session.query(Instance).with_for_update().filter_by(id = instance_id).first()
@@ -36,10 +35,10 @@ class t_validar_dados():
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
-            cliente = 'validado',
+            cliente = 'enviado',
             pontos = state_atual.pontos,
             id_pedido = state_atual.id_pedido,
-            pedido = 'validado',
+            pedido = 'enviado',
             id_produto = state_atual.id_produto,
             produto=state_atual.produto,
             pagamento=state_atual.pagamento,
@@ -48,7 +47,7 @@ class t_validar_dados():
 
 
         session.add(state)
-        session.commit()
+        session.flush()
         instance.state = state
         session.commit()
         # DESBLOQUEIA o state_atual
@@ -56,6 +55,12 @@ class t_validar_dados():
         history_entry.completed_at = datetime.datetime.now()
         history_entry.current_state_id = state_atual.id
         history_entry.final_state_id = state.id
+        
+        wed_trigger = session.query(WED_trigger).all()
+        for i in wed_trigger:
+            wedState_wedTrigger(wed_state=state, status='started', wed_trigger=i)
+        
         session.commit()
         session.close()
         print("finish da transação")
+
