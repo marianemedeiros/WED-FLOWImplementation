@@ -101,14 +101,26 @@ class DAO:
         #self.insert_wed_state(list_attributes)
 
     def insert_wed_state(self,list_attributes):
-        #1 criar um instance
-        #2 cria state
         wed_flow = DAO.select_flow(self)
         instance = DAO.create_instance(self,"started",wed_flow[0].id)
 
-        #TODO o certo certo messsmo é nesta parte fazer de acordo com o wed_attribute, ou seja,
-        #ler o wed_attribute colocar na lista o nome , o id e o valor.
-        initial_state = WED_state(id_cliente=1, cliente=list_attributes[1]["1"], id_pedido=2, pedido=list_attributes[1]["2"], instance_id=instance.id)
+        initial_state = WED_state()
+
+        for d in list_attributes[1]:
+            if d == 'pontos':
+                initial_state.pagamento = list_attributes[1][d][1]
+            if d == 'pagamamento':
+                initial_state.pagamento = list_attributes[1][d][1]
+            if d == 'id_cliente':
+                initial_state.id_cliente = list_attributes[1][d][0]
+                initial_state.cliente = list_attributes[1][d][1]
+            if d == 'id_produto':
+                initial_state.id_produto = list_attributes[1][d][0]
+                initial_state.produto = list_attributes[1][d][1]
+            if d == 'pedido':
+                initial_state.id_pedido = list_attributes[1][d][0]
+                initial_state.pedido = list_attributes[1][d][1]
+                
         self.session.add(initial_state)
         self.session.commit()
 

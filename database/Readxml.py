@@ -56,7 +56,8 @@ class Readxml:
             if(len(data_attributes) > 2):
                 inicial_id = data_attributes['@inicial_id']
                 inicial_value = data_attributes['@inicial_value']
-                self.initial_state[inicial_id] = inicial_value
+                self.initial_state[name] = [inicial_id]
+                self.initial_state[name].append(inicial_value)
 
             #self.initial_state = []
             wed_attributes = WED_attribute(name=name, type_=type_)
