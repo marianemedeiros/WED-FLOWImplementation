@@ -2,11 +2,11 @@ from database import *
 
 if __name__ == '__main__':
     dao = DAO()
-    readxml = Readxml('xml/paralelo.xml')
+    readxml = Readxml('xml/sequencial.xml')
 
     lista = readxml.data_wed_attributes()
     
-    for i in range(1):
+    for i in range(10):
     	dao.insert_wed_state(lista)
 
 
