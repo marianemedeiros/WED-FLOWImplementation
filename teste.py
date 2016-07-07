@@ -6,8 +6,10 @@ if __name__ == '__main__':
 
     lista = readxml.data_wed_attributes()
     
-    for i in range(1):
-    	dao.insert_wed_state(lista)
+
+    for i in range(50):
+    	print(i)
+    	dao.insert_wed_state(lita)
 
 
     
