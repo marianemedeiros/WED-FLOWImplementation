@@ -17,7 +17,7 @@ import threading
 def avalia_trigger(condition_id, state):
     dao = DAO()
     condition = dao.session.query(WED_condition).filter_by(id = condition_id).first()
-    predicate = condition.predicates;
+    predicate = condition.predicates
 
     results = list()
 
