@@ -31,7 +31,7 @@ class t_processar_pagamento():
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
-            cliente = "validado10",
+            cliente = 'validado3',
             pontos = state_atual.pontos,
             id_pedido = state_atual.id_pedido,
             pedido = 'pago',

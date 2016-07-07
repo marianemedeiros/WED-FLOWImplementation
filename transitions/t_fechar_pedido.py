@@ -31,7 +31,7 @@ class t_fechar_pedido():
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
-            cliente = 'validado6',
+            cliente = 'validado7',
             pontos = state_atual.pontos,
             id_pedido = state_atual.id_pedido,
             pedido = 'concluido',

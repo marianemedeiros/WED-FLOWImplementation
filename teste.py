@@ -2,7 +2,7 @@ from database import *
 
 if __name__ == '__main__':
     dao = DAO()
-    readxml = Readxml('xml/sequencial.xml')
+    readxml = Readxml('xml/paralelo.xml')
 
     lista = readxml.data_wed_attributes()
     

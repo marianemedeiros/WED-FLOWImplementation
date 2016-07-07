@@ -31,7 +31,7 @@ class t_atualiza_pfidelidade():
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
-            cliente = 'validado5',
+            cliente = 'validado6',
             pontos = 10,
             id_pedido = state_atual.id_pedido,
             pedido = state_atual.pedido,

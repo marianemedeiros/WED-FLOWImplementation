@@ -19,9 +19,8 @@
 		</Condition>
 
 		<Condition Name="c_pedido_finalizado" >
-			<Predicate Id="2"> pedido = "concluido" </Predicate>
-			<Predicate Id="1"> pedido = "cancelado" </Predicate>
-			<Expression> 2 OR 1 </Expression>
+			<Predicate Id="1"> cliente = "validado7" </Predicate>
+			<Expression> 1 </Expression>
 		</Condition>
 
 	</WED-conditions>
@@ -29,33 +28,37 @@
 	<WED-transitions>
 		<Transition Name="t_validar_dados" >
 			<UpdatedAttribute AttrName="cliente" />
-			<UpdatedAttribute AttrName="pedido" />
 		</Transition>
 
-		<Transition Name="t_reservar_produtos" >
+		<Transition Name="t_reserva_produtos" >
+			<UpdatedAttribute AttrName="cliente" />
 			<UpdatedAttribute AttrName="produto" />
 		</Transition>
 
 		<Transition Name="t_processar_pagamento" >
+			<UpdatedAttribute AttrName="cliente" />
 			<UpdatedAttribute AttrName="pedido" />
 		</Transition>
 
 		<Transition Name="t_enviar_produtos" >
-			<UpdatedAttribute AttrName="pedido" />			
-			<UpdatedAttribute AttrName="produto" />
+			<UpdatedAttribute AttrName="cliente" />	
+			<UpdatedAttribute AttrName="pedido" />
+			<UpdatedAttribute AttrName="produto" />					
 		</Transition>
 
 		<Transition Name="t_emitir_notificacao_envio" >
+			<UpdatedAttribute AttrName="cliente" />
 			<UpdatedAttribute AttrName="pedido" />
 		</Transition>
 
 		<Transition Name="t_atualiza_pfidelidade" >
 			<UpdatedAttribute AttrName="cliente" />
-			<UpdatedAttribute AttrName="pontos" />
+			<UpdatedAttribute AttrName="pontos" />			
 		</Transition>
 
 		<Transition Name="t_fechar_pedido" >
-			<UpdatedAttribute AttrName="pedido" />
+			<UpdatedAttribute AttrName="cliente" />
+			<UpdatedAttribute AttrName="pedido" />			
 		</Transition>
 
 	</WED-transitions>
@@ -63,7 +66,7 @@
 	<WED-flows>
 		<Flow Name="venda_livro" FinalStateCondName="c_pedido_finalizado">
 			<Trigger CondName="c_novo_pedido" TransName="t_validar_dados" Period="1s" />
-			<Trigger CondName="c_novo_pedido" TransName="t_reservar_produtos" Period="1s" />	
+			<Trigger CondName="c_novo_pedido" TransName="t_reserva_produtos" Period="1s" />	
 			<Trigger CondName="c_novo_pedido" TransName="t_processar_pagamento" Period="3s" />		
 			<Trigger CondName="c_novo_pedido" TransName="t_enviar_produtos" Period="3s" />									
 			<Trigger CondName="c_novo_pedido" TransName="t_emitir_notificacao_envio" Period="3s" />

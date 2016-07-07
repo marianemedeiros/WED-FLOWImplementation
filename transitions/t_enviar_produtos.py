@@ -31,7 +31,7 @@ class t_enviar_produtos():
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
-            cliente = 'validado3',
+            cliente = 'validado4',
             pontos = state_atual.pontos,
             id_pedido = state_atual.id_pedido,
             pedido = 'enviado',
