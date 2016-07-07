@@ -27,7 +27,7 @@ class t_reserva_produtos():
         instance = session.query(Instance).with_for_update().filter_by(id = instance_id).first()
         
         history_entry = session.query(History_entry).filter_by(id = history_entry_id).first()
-        state_atual = session.query(WED_state).with_for_update().filter_by(id = instance.state_id).first()
+        state_atual = session.query(WED_state).filter_by(id = instance.state_id).first()
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
@@ -44,11 +44,12 @@ class t_reserva_produtos():
 
         session.add(state)
         session.flush()
-        instance.state = state
+        instance.state_id = state.id
         session.commit()
         # DESBLOQUEIA o state_atual
 
         history_entry.completed_at = datetime.datetime.now()
+        print("-----------------------------------------------------------------------: ", state_atual.id)
         history_entry.current_state_id = state_atual.id
         history_entry.final_state_id = state.id
         
