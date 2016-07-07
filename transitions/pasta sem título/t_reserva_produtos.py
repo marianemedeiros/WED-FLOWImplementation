@@ -21,7 +21,7 @@ import copy
 
 
 from database.db_session import *
-class t_fechar_pedido():
+class t_reserva_produtos():
     def run(instance_id, history_entry_id):
         session = Session()
         instance = session.query(Instance).with_for_update().filter_by(id = instance_id).first()
@@ -31,12 +31,12 @@ class t_fechar_pedido():
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
-            cliente = 'validado7',
+            cliente = 'validado2',
             pontos = state_atual.pontos,
             id_pedido = state_atual.id_pedido,
-            pedido = 'concluido',
+            pedido = state_atual.pedido,
             id_produto = state_atual.id_produto,
-            produto= state_atual.produto,
+            produto='reservado',
             pagamento=state_atual.pagamento,
             instance_id = instance.id,
             )

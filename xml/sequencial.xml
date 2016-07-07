@@ -39,7 +39,7 @@
 		</Condition>
 
 		<Condition Name="c_pedido_tratado" >
-			<Predicate Id="1"> cliente = "validado6" </Predicate>
+			<Predicate Id="1"> cliente = "validado5" </Predicate>
 			<Expression> 1 </Expression>
 		</Condition>
 
@@ -57,26 +57,33 @@
 
 		<Transition Name="t_reserva_produtos" >
 			<UpdatedAttribute AttrName="cliente" />
+			<UpdatedAttribute AttrName="produto" />
 		</Transition>
 
 		<Transition Name="t_processar_pagamento" >
 			<UpdatedAttribute AttrName="cliente" />
+			<UpdatedAttribute AttrName="pedido" />
 		</Transition>
 
 		<Transition Name="t_enviar_produtos" >
-			<UpdatedAttribute AttrName="cliente" />			
+			<UpdatedAttribute AttrName="cliente" />	
+			<UpdatedAttribute AttrName="pedido" />
+			<UpdatedAttribute AttrName="produto" />					
 		</Transition>
 
 		<Transition Name="t_emitir_notificacao_envio" >
 			<UpdatedAttribute AttrName="cliente" />
+			<UpdatedAttribute AttrName="pedido" />
 		</Transition>
 
 		<Transition Name="t_atualiza_pfidelidade" >
 			<UpdatedAttribute AttrName="cliente" />
+			<UpdatedAttribute AttrName="pontos" />			
 		</Transition>
 
 		<Transition Name="t_fechar_pedido" >
 			<UpdatedAttribute AttrName="cliente" />
+			<UpdatedAttribute AttrName="pedido" />			
 		</Transition>
 
 	</WED-transitions>
