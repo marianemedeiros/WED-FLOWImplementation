@@ -59,3 +59,4 @@ class t_reserva_produtos():
         
         session.commit()
         session.close()
+        print('t_reserva_produtos acabou..')

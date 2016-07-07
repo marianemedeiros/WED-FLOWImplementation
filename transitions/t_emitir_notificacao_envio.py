@@ -31,7 +31,7 @@ class t_emitir_notificacao_envio():
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
-            cliente = 'validado4',
+            cliente = 'validado5',
             pontos = state_atual.pontos,
             id_pedido = state_atual.id_pedido,
             pedido = 'envio notificado',
@@ -58,3 +58,4 @@ class t_emitir_notificacao_envio():
         
         session.commit()
         session.close()
+        print('t_emitir_notificacao_envio acabou..')

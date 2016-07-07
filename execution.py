@@ -17,7 +17,7 @@ import threading
 def avalia_trigger(condition_id, state):
     dao = DAO()
     condition = dao.session.query(WED_condition).filter_by(id = condition_id).first()
-    predicate = condition.predicates;
+    predicate = condition.predicates
 
     results = list()
 
@@ -25,10 +25,10 @@ def avalia_trigger(condition_id, state):
     for p in list1:
 
         list2 = p.split(' ')
-        print('list2: ', list2)
-        print('state: ', state.id)
+        #print('list2: ', list2)
+        #print('state: ', state.id)
         attr1 = getattr(state, list2[0])
-        print('attr1: ' , attr1 , '\nattr2', list2[2])
+        #print('attr1: ' , attr1 , '\nattr2', list2[2])
         if attr1 == list2[2]:
             results.append(True)
         else:
@@ -37,8 +37,8 @@ def avalia_trigger(condition_id, state):
 
     expressions = condition.expression
 
-    print('len: ' , len(results))
-    print('result: ' , results)
+    #print('len: ' , len(results))
+    #print('result: ' , results)
     if len(results) == 1:
         print('iff')
         return results[0]
@@ -75,15 +75,16 @@ def make_func(trigger):
         for i in fila_wedStates_wedTriggers:
             estado = dao.select_state(i.wed_state_id)[0]
             result = avalia_trigger(trigger.wed_condition_id, estado)
-            
+            print('Avalia trigger: ', trigger.wed_condition.predicates, ' StateId: ', estado.id)
+            print('result: ' , result)
             if(result == True):
                 # Criar a entrada no history_entry
-                print(i.wed_state_id)
-                print(dao.select_state(i.wed_state_id)[0].id)
+                #print(i.wed_state_id)
+                #print(dao.select_state(i.wed_state_id)[0].id)
                 bla = dao.select_state(i.wed_state_id)[0]
-                print(bla)
+                #print(bla)
                 instance = dao.select_instance(bla.instance_id)[0]
-                
+                print('Intance selecionada considerando o wed_state ', i.wed_state_id, ': ', instance.id)
                 
                 history_entry = History_entry(create_at = datetime.now(), instance_id = instance.id, \
                     initial_state_id = i.wed_state_id, wed_transition_id = i.wed_trigger.wed_transition_id) # FALTA O INTERRUPTION
@@ -92,7 +93,7 @@ def make_func(trigger):
                 dao.session.commit()
                 
                 transition = i.wed_trigger.wed_transition
-                print('name t: ' , transition.name)
+                print('Transition name: ' , transition.name)
                 # Carrega a classe da transition
                 package = __import__("transitions")
                 
@@ -101,7 +102,7 @@ def make_func(trigger):
 
                 # cria e inicia a thread da transition
                 try:
-                    print("aaa " , transition.name)
+                    print("Inicia a thread")
                     _thread.start_new_thread(class_.run, (instance.id, history_entry.id))
                    # _thread.start_new_thread( print_time, ("Thread-2", 4, ) )
                 except:

@@ -62,4 +62,5 @@ class t_validar_dados():
         
         session.commit()
         session.close()
+        print('t_validar_dados acabou..')
 
