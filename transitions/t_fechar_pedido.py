@@ -58,3 +58,4 @@ class t_fechar_pedido():
         
         session.commit()
         session.close()
+        print('t_fechar_pedido acabou..')        

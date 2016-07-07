@@ -58,3 +58,4 @@ class t_emitir_notificacao_envio():
         
         session.commit()
         session.close()
+        print('t_emitir_notificacao_envio acabou..')

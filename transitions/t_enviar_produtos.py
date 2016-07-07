@@ -59,3 +59,4 @@ class t_enviar_produtos():
         
         session.commit()
         session.close()
+        print('t_enviar_produtos acabou..')

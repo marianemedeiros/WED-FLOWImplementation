@@ -59,3 +59,4 @@ class t_processar_pagamento():
         
         session.commit()
         session.close()
+        print('t_processar_pagamento acabou..')

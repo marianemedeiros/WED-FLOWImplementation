@@ -58,3 +58,4 @@ class t_atualiza_pfidelidade():
         
         session.commit()
         session.close()
+        print('t_atualiza_pfidelidade acabou..')
