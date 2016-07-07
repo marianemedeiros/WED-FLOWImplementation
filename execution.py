@@ -14,8 +14,9 @@ import threading
     # atualiza o history_entry (monitor passa a linha do history)
     # Inserir o novo estado nas filas
 
-def avalia_trigger(condition, state, dao):
-    
+def avalia_trigger(condition_id, state):
+    dao = DAO()
+    condition = dao.session.query(WED_condition).filter_by(id = condition_id).first()
     predicate = condition.predicates;
 
     results = list()
@@ -72,7 +73,8 @@ def make_func(trigger):
         dao.session.commit()
 
         for i in fila_wedStates_wedTriggers:
-            result = avalia_trigger(trigger.wed_condition, dao.select_state(i.wed_state_id)[0], dao)
+            estado = dao.select_state(i.wed_state_id)[0]
+            result = avalia_trigger(trigger.wed_condition_id, estado)
             
             if(result == True):
                 # Criar a entrada no history_entry
