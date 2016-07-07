@@ -51,6 +51,8 @@ class t_atualiza_pfidelidade():
         history_entry.completed_at = datetime.datetime.now()
         history_entry.current_state_id = state_atual.id
         history_entry.final_state_id = state.id
+        history_entry.status = "success"
+
         
         wed_trigger = session.query(WED_trigger).all()
         for i in wed_trigger:

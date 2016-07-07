@@ -52,7 +52,7 @@ class t_reserva_produtos():
         print("-----------------------------------------------------------------------: ", state_atual.id)
         history_entry.current_state_id = state_atual.id
         history_entry.final_state_id = state.id
-        
+        history_entry.status = "success"
         wed_trigger = session.query(WED_trigger).all()
         for i in wed_trigger:
             wedState_wedTrigger(wed_state=state, status='started', wed_trigger=i)

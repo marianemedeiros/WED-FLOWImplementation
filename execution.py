@@ -75,7 +75,7 @@ def make_func(trigger):
         for i in fila_wedStates_wedTriggers:
             estado = dao.select_state(i.wed_state_id)[0]
             result = avalia_trigger(trigger.wed_condition_id, estado)
-            print('Avalia trigger: ', trigger.wed_condition.predicates, ' StateId: ', estado.id)
+            # print('Avalia trigger: ', trigger.wed_condition.predicates, ' StateId: ', estado.id)
             print('result: ' , result)
             if(result == True):
                 # Criar a entrada no history_entry
@@ -86,7 +86,7 @@ def make_func(trigger):
                 instance = dao.select_instance(bla.instance_id)[0]
                 print('Intance selecionada considerando o wed_state ', i.wed_state_id, ': ', instance.id)
                 
-                history_entry = History_entry(create_at = datetime.now(), instance_id = instance.id, \
+                history_entry = History_entry(create_at = datetime.now(), status = 'started' , instance_id = instance.id, \
                     initial_state_id = i.wed_state_id, wed_transition_id = i.wed_trigger.wed_transition_id) # FALTA O INTERRUPTION
                 
                 dao.session.add(history_entry)
