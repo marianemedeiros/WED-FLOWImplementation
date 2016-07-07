@@ -51,6 +51,9 @@ class t_fechar_pedido():
         history_entry.completed_at = datetime.datetime.now()
         history_entry.current_state_id = state_atual.id
         history_entry.final_state_id = state.id
+        history_entry.status = "success"
+        instance.status = "finished"
+        instance.finalized_at = datetime.datetime.now()
         
         wed_trigger = session.query(WED_trigger).all()
         for i in wed_trigger:

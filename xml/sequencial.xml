@@ -3,12 +3,12 @@
 	<WED-attributes>
 		<Attribute Name="id_cliente" Type="integer" inicial_value="1"/>
 		<Attribute Name="cliente" Type="string" inicial_value="invalido"/>
-		<Attribute Name="id_produto" Type="integer" />
-		<Attribute Name="produto" Type="string"/>
+		<Attribute Name="id_produto" Type="integer" inicial_value="1" />
+		<Attribute Name="produto" Type="string" inicial_value="vazio"/>
 		<Attribute Name="id_pedido" Type="integer" inicial_value="2"/>
 		<Attribute Name="pedido" Type="string" inicial_value="recebido"/>
-		<Attribute Name="pontos" Type="integer"/>
-		<Attribute Name="pagamento" Type="string"/>		
+		<Attribute Name="pontos" Type="integer" inicial_value="2"/>
+		<Attribute Name="pagamento" Type="string" inicial_value="pago"/>		
 	</WED-attributes>
 
 	<WED-conditions>
