@@ -31,7 +31,7 @@ class t_processar_pagamento():
         
         state = WED_state(
             id_cliente = state_atual.id_cliente,
-            cliente = state_atual.cliente,
+            cliente = "validado10",
             pontos = state_atual.pontos,
             id_pedido = state_atual.id_pedido,
             pedido = 'pago',
@@ -44,11 +44,12 @@ class t_processar_pagamento():
 
         session.add(state)
         session.flush()
-        instance.state = state
+        instance.state_id = state.id
         session.commit()
         # DESBLOQUEIA o state_atual
 
         history_entry.completed_at = datetime.datetime.now()
+        print("-----------------------------------------------------------------------: ", state_atual.id)
         history_entry.current_state_id = state_atual.id
         history_entry.final_state_id = state.id
         
