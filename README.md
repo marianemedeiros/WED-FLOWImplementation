@@ -9,7 +9,8 @@ This approach is based in three statements:
 
 WED-flow is based in a set of pair condition-transition and, in execution time, define what activities will be execute in an instance of the business process. When a new state of data is provided as initial state of an instance, this state is processed by the set of pairs condition-transition and, in case of condition is satisfied, the transition associated will be fired. The execution of an transition will produce a new state of data to the instance, so this new state can be evaluate and fired others transitions, in this way continuing the execution an instance of WED-flow and setting the control flow.
 
-The project WEDFLOWImplementation is an implementation of WED-flow. This project was made as part of a subject of a class Advanced Topics in Computer Science.
+This project has been developed for the class Advanced Topics in Computer Science at UTFPR in 2016. The WED-flow official implementation can be found on the Web at http://data.ime.usp.br/wedflow.
+
 
 Install:
   - python3
